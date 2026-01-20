@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | TechShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .stat-card { transition: transform 0.2s ease, shadow 0.2s ease; }
+    .stat-card:hover { transform: translateY(-5px); }
+  </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex flex-col md:flex-row">
+
+    <aside id="sidebar"
+        class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen">
+        <div class="p-6 border-b border-slate-800/50">
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
+            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
+
+            <a href="admin.html"
+                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
+                <i class="fas fa-chart-pie w-5"></i><span class="font-medium">Dashboard</span>
+            </a>
+
+            <a href="admin_orders.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-shopping-basket w-5"></i><span class="font-medium">Quản lý đơn hàng</span>
+                <span id="order-badge" class="ml-auto bg-red-500 text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+            </a>
+
+            <a href="accounts.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-robot w-5"></i><span class="font-medium">Account AI</span>
+            </a>
+
+            <a href="phone_lock.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-mobile-alt w-5"></i><span class="font-medium">Điện thoại lock</span>
+            </a>
+
+            <a href="components.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-microchip w-5"></i><span class="font-medium">Linh Kiện</span>
+            </a>
+
+            <a href="../index.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-home w-5"></i><span class="font-medium">Về trang chủ</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition font-bold text-sm">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+  <main class="flex-1 p-6 md:p-10">
+    <div id="content" class="max-w-6xl mx-auto space-y-10">
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+          <div class="relative z-10">
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Tài khoản AI</p>
+            <h3 id="stat-accounts" class="text-3xl font-black text-slate-900">0</h3>
+            <div class="flex items-center gap-1 mt-2 text-emerald-500 font-bold text-[10px]">
+              <i class="fas fa-caret-up"></i> Tăng trưởng ổn định
+            </div>
+          </div>
+          <i class="fas fa-robot absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-blue-50 transition-colors"></i>
+        </div>
+
+        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+          <div class="relative z-10">
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Thiết bị Lock</p>
+            <h3 id="stat-phones" class="text-3xl font-black text-slate-900">0</h3>
+            <div class="flex items-center gap-1 mt-2 text-blue-500 font-bold text-[10px]">
+              <i class="fas fa-check-circle"></i> Hệ thống ổn định
+            </div>
+          </div>
+          <i class="fas fa-mobile-alt absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-indigo-50 transition-colors"></i>
+        </div>
+
+        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+          <div class="relative z-10">
+            <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Linh kiện</p>
+            <h3 id="stat-components" class="text-3xl font-black text-slate-900">0</h3>
+            <div class="flex items-center gap-1 mt-2 text-purple-500 font-bold text-[10px]">
+              <i class="fas fa-box"></i> Kho hàng sẵn sàng
+            </div>
+          </div>
+          <i class="fas fa-microchip absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-purple-50 transition-colors"></i>
+        </div>
+      </div>
+
+      <div class="max-w-md center mx-auto">
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
+          <div class="relative z-10">
+            <div class="flex items-center gap-5 mb-8">
+              <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center font-black text-2xl border border-white/30 shadow-inner" id="admin-initial">A</div>
+              <div>
+                <p id="currentAdminEmail" class="font-bold text-lg truncate w-48">Admin Account</p>
+                <span class="text-xs text-blue-200 font-bold uppercase tracking-widest opacity-80">Root Access</span>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+                <p class="text-[10px] text-blue-200 uppercase font-black mb-1 opacity-70">Trạng thái</p>
+                <p class="text-sm font-bold flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span> Trực tuyến
+                </p>
+              </div>
+              <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
+                <p class="text-[10px] text-blue-200 uppercase font-black mb-1 opacity-70">Phiên bản</p>
+                <p class="text-sm font-bold italic">v1.0.0</p>
+              </div>
+            </div>
+          </div>
+          <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    const API_BASE = 'http://localhost:4000/api';
+
+    async function loadDashboardData() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+
+      try {
+        const [resMe, resStats] = await Promise.all([
+          fetch(`${API_BASE}/me`, { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch(`${API_BASE}/me/stats`, { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+
+        const adminData = await resMe.json();
+        const stats = await resStats.json();
+
+        // Cập nhật thông tin Admin
+        if (adminData.email) {
+          document.getElementById('currentAdminEmail').textContent = adminData.email;
+          document.getElementById('admin-initial').textContent = adminData.email[0].toUpperCase();
+        }
+
+        // Cập nhật 4 thẻ thống kê
+        document.getElementById('stat-accounts').innerText = (stats.totalAccounts || 0).toLocaleString();
+        document.getElementById('stat-phones').innerText = (stats.totalPhones || 0).toLocaleString();
+        document.getElementById('stat-components').innerText = (stats.totalComponents || 0).toLocaleString();
+        document.getElementById('stat-low-stock').innerText = (stats.lowStockCount || 0).toLocaleString();
+
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu:", error);
+      }
+    }
+
+    // Khởi chạy
+    loadDashboardData();
+  </script>
+</body>
+</html> 

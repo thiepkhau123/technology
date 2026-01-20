@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Điện thoại Lock | TechShop Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex flex-col md:flex-row">
+
+    <div class="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs">Admin</span></h1>
+        <button onclick="toggleSidebar()" class="p-2 hover:bg-slate-800 rounded-lg">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-300 transform -translate-x-full transition-transform duration-300 z-50 md:translate-x-0 md:static md:flex md:flex-col border-r border-slate-800">
+        <div class="p-6 hidden md:block border-b border-slate-800/50">
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
+            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
+            <a href="admin.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-chart-pie w-5"></i> <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="admin_orders.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-shopping-basket w-5"></i> <span class="font-medium">Quản lý đơn hàng</span>
+            </a>
+            <a href="accounts.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-robot w-5"></i> <span class="font-medium">Account AI</span>
+            </a>
+            <a href="phone_lock.html"
+                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
+                <i class="fas fa-mobile-alt w-5"></i> <span class="font-medium">Điện thoại lock</span>
+            </a>
+            <a href="components.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-microchip w-5"></i> <span class="font-medium">Linh Kiện</span>
+            </a>
+            <a href="../index.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition mt-10">
+                <i class="fas fa-home w-5"></i> <span class="font-medium">Về trang chủ</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition font-bold text-sm">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 pb-24 md:pb-8">
+        <header
+            class="h-16 bg-white border-b border-slate-200 hidden md:flex items-center justify-between px-8 sticky top-0 z-40">
+            <h2 class="font-bold text-slate-800 text-lg">Quản lý kho máy Lock</h2>
+            <div id="status" class="hidden px-4 py-1.5 rounded-full text-xs font-bold"></div>
+        </header>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto">
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-8">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Nhập máy mới</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input id="modelName" placeholder="Tên máy (VD: iPhone 15 Pro)"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    <select id="carrier"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                        <option value="">Chọn nhà mạng</option>
+                        <option value="AT&T">AT&T</option>
+                        <option value="T-Mobile">T-Mobile</option>
+                        <option value="Verizon">Verizon</option>
+                        <option value="Softbank">Softbank/AU</option>
+                    </select>
+                    <input id="price" type="number" placeholder="Giá niêm yết (VNĐ)"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                    <button onclick="addPhone()" id="btnAdd"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg active:scale-95 py-3">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                    <h3 class="font-bold text-slate-800">Kho hàng hiện tại</h3>
+                    <div id="loading" class="hidden text-blue-600 text-xs font-bold"><i
+                            class="fas fa-spinner fa-spin"></i> Đang tải...</div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left whitespace-nowrap">
+                        <thead
+                            class="bg-slate-50/80 text-slate-500 text-[11px] font-bold uppercase tracking-widest border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-4">Sản phẩm</th>
+                                <th class="px-6 py-4">Nhà mạng</th>
+                                <th class="px-6 py-4">Giá bán</th>
+                                <th class="px-6 py-4 text-center">Tình trạng</th>
+                                <th class="px-6 py-4 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phone-list" class="divide-y divide-slate-50 text-sm">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const API_URL = 'http://localhost:4000/api/phones';
+        const token = localStorage.getItem('access_token');
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+        }
+
+        function showNotify(msg, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.classList.remove('hidden');
+            status.className = `px-4 py-1.5 rounded-full text-xs font-bold ${isError ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`;
+            setTimeout(() => status.classList.add('hidden'), 3000);
+        }
+
+        // 1. Hàm lấy danh sách máy từ Database
+        async function loadPhones() {
+            const loading = document.getElementById('loading');
+            if (loading) loading.classList.remove('hidden');
+
+            try {
+                const res = await fetch(API_URL, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                const listBody = document.getElementById('phone-list');
+                listBody.innerHTML = data.map(p => `
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="px-6 py-4 font-bold text-slate-700">${p.name}</td>
+          <td class="px-6 py-4">
+            <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-[10px] font-bold uppercase">${p.type}</span>
+          </td>
+          <td class="px-6 py-4 font-medium">${p.price ? p.price.toLocaleString() : 0}đ</td>
+          <td class="px-6 py-4 text-center">
+            <span class="${p.stock > 0 ? 'text-green-500' : 'text-red-500'} font-bold text-xs uppercase">
+              ${p.stock > 0 ? 'Còn hàng (' + p.stock + ')' : 'Hết hàng'}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <button onclick="deletePhone('${p.id}')" class="text-slate-300 hover:text-red-500 p-2 transition">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+            } catch (err) {
+                console.error("Lỗi tải danh sách:", err);
+            } finally {
+                if (loading) loading.classList.add('hidden');
+            }
+        }
+
+        // 2. Hàm thêm máy mới (Giải quyết lỗi addPhone is not defined)
+        async function addPhone() {
+            const name = document.getElementById('modelName').value;
+            const type = document.getElementById('carrier').value; // Dùng cột type để lưu nhà mạng/loại máy
+            const price = document.getElementById('price').value;
+            const btnAdd = document.getElementById('btnAdd');
+
+            if (!name || !type || !price) {
+                return showNotify("Vui lòng nhập đủ Tên, Nhà mạng và Giá", true);
+            }
+
+            btnAdd.disabled = true;
+            btnAdd.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý...';
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        type: type,
+                        price: parseFloat(price),
+                        description: `Máy Lock nhà mạng ${type}`,
+                        stock: 1 // Mặc định thêm 1 máy
+                    })
+                });
+
+                if (res.ok) {
+                    showNotify("Đã thêm máy vào kho thành công!");
+                    document.getElementById('modelName').value = '';
+                    document.getElementById('price').value = '';
+                    loadPhones(); // Tải lại danh sách
+                } else {
+                    const errData = await res.json();
+                    showNotify(errData.message || "Lỗi khi thêm máy", true);
+                }
+            } catch (err) {
+                showNotify("Lỗi kết nối Server", true);
+            } finally {
+                btnAdd.disabled = false;
+                btnAdd.innerHTML = '<i class="fas fa-plus"></i> Thêm vào kho';
+            }
+        }
+
+        // 3. Hàm xóa máy
+        async function deletePhone(id) {
+            if (!confirm("Bạn có chắc chắn muốn xóa máy này khỏi kho hàng?")) return;
+
+            try {
+                const res = await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (res.ok) {
+                    showNotify("Đã xóa máy");
+                    loadPhones();
+                }
+            } catch (err) {
+                showNotify("Không thể xóa", true);
+            }
+        }
+
+        // Kiểm tra quyền Admin và khởi chạy
+        if (typeof checkAdmin === "function") {
+            checkAdmin().then(() => loadPhones());
+        } else {
+            loadPhones();
+        }
+    </script>
+</body>
+
+</html>

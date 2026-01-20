@@ -1,0 +1,51 @@
+<div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+        <div class="bg-blue-600 p-1.5 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+            </svg>
+        </div>
+        <a href="/index.html">
+            <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">Tech<span
+                    class="text-blue-600">Shop</span></h1>
+        </a>
+    </div>
+
+    <div id="auth-area" class="flex items-center gap-4">
+        <a href="cart.html" class="relative p-2 text-slate-600 hover:text-blue-600 transition">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span id="cart-count"
+                class="bg-red-500 text-white text-[10px] absolute -top-1 -right-1 px-1.5 rounded-full font-bold">0</span>
+        </a>
+
+        <div id="guest" class="hidden flex items-center gap-3">
+            <a href="login.html"
+                class="text-sm font-semibold text-slate-600 hover:text-blue-600 px-4 py-2 transition">Đăng nhập</a>
+            <a href="register.html"
+                class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow-md shadow-blue-100">Đăng
+                ký</a>
+        </div>
+
+        <div id="user" class="hidden flex items-center gap-4">
+            <div class="text-right border-r pr-4 border-gray-200 hidden sm:block">
+                <p class="text-xs text-gray-500 leading-none mb-1">Xin chào,</p>
+                <b id="username" class="text-sm font-bold text-slate-800">Khách</b>
+            </div>
+
+            <a id="admin-link" href="/admin/admin.html"
+                class="hidden bg-slate-800 hover:bg-black text-white text-xs font-bold px-3 py-2 rounded-lg transition">Admin</a>
+
+            <a href="orders.html"
+                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition">
+                <i class="fas fa-history mr-2"></i> Lịch sử đơn hàng
+            </a>
+
+            <button onclick="logout()"
+                class="text-red-600 hover:bg-red-50 text-sm font-semibold px-4 py-2 rounded-lg border border-red-100 transition">
+                Đăng xuất
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Account AI | TechShop Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex flex-col md:flex-row">
+
+    <div class="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs">Admin</span></h1>
+        <button onclick="toggleSidebar()" class="p-2 hover:bg-slate-800 rounded-lg">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
+
+    <aside id="sidebar"
+        class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-300 transform -translate-x-full transition-transform duration-300 z-50 md:translate-x-0 md:static md:flex md:flex-col border-r border-slate-800">
+        <div class="p-6 hidden md:block border-b border-slate-800/50">
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
+        </div>
+
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
+            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
+            <a href="admin.html" 
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-chart-pie w-5"></i> <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="admin_orders.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-shopping-basket w-5"></i> <span class="font-medium">Quản lý đơn hàng</span>
+            </a>
+            <a href="accounts.html"
+                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
+                <i class="fas fa-robot w-5"></i> <span class="font-medium">Account AI</span>
+            </a>
+            <a href="phone_lock.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-mobile-alt w-5"></i> <span class="font-medium">Điện thoại lock</span>
+            </a>
+            <a href="components.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-microchip w-5"></i> <span class="font-medium">Linh Kiện</span>
+            </a>
+            <a href="../index.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+                <i class="fas fa-home w-5"></i> <span class="font-medium">Về trang chủ</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-sm">
+                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 pb-24 md:pb-8">
+        <header
+            class="h-16 bg-white border-b border-slate-200 hidden md:flex items-center justify-between px-8 sticky top-0 z-40">
+            <h2 class="font-bold text-slate-800 text-lg">Quản lý tài khoản AI</h2>
+            <div id="status" class="hidden px-4 py-1.5 rounded-full text-xs font-bold transition-all"></div>
+        </header>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto">
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-8">
+                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Thêm Account mới</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <input id="email" type="email" placeholder="Email tài khoản"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+
+                    <select id="provider" onchange="updateImagePreview()"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-600">
+                        <option value="">Chọn nhà cung cấp</option>
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Claude">Claude</option>
+                        <option value="Gemini">Gemini</option>
+                        <option value="Midjourney">Midjourney</option>
+                    </select>
+
+                    <input id="plan" placeholder="Gói (Pro, Plus...)"
+                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+
+                    <div class="relative">
+                        <input id="price" type="number" placeholder="Giá bán"
+                            class="w-full bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                        <span class="absolute right-4 top-3.5 text-slate-400 font-bold text-sm">đ</span>
+                    </div>
+
+                    <div class="lg:col-span-2 flex gap-3">
+                        <input id="image_url" oninput="updateImagePreview()"
+                            placeholder="Link ảnh (Để trống sẽ dùng ảnh NCC)"
+                            class="flex-1 bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                        <div
+                            class="w-12 h-12 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0 border border-slate-200">
+                            <img id="previewImg" src="../assets/noimage.png"
+                                class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <button onclick="add()" id="btnAdd"
+                        class="lg:col-span-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg active:scale-95 py-3.5 mt-2">
+                        <i class="fas fa-plus mr-2"></i>Thêm tài khoản vào hệ thống
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
+                    <h3 class="font-bold text-slate-800">Danh sách hệ thống</h3>
+                    <div id="loading" class="hidden text-blue-600 text-xs font-bold">
+                        <i class="fas fa-spinner fa-spin"></i> Đang tải...
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left whitespace-nowrap">
+                        <thead
+                            class="bg-slate-50/80 text-slate-500 text-[11px] font-bold uppercase tracking-widest border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-4">Sản phẩm / Email</th>
+                                <th class="px-6 py-4">Nhà cung cấp</th>
+                                <th class="px-6 py-4 text-center">Gói / Giá</th>
+                                <th class="px-6 py-4 text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list" class="divide-y divide-slate-50 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const API = 'http://localhost:4000/api/accounts';
+        const token = localStorage.getItem('access_token');
+
+        const DEFAULT_IMAGES = {
+            'ChatGPT': 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+            'Claude': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnM91o7r1wba01xcHW15PLqbe-ONaTIjOO3g&s',
+            'Gemini': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/960px-Google_Gemini_icon_2025.svg.png',
+            'Midjourney': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Midjourney_Emblem.png/960px-Midjourney_Emblem.png'
+        };
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+        }
+
+        function showNotify(msg, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.classList.remove('hidden');
+            status.className = `px-4 py-1.5 rounded-full text-xs font-bold ${isError ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`;
+            setTimeout(() => status.classList.add('hidden'), 3000);
+        }
+
+        // Cập nhật ảnh xem trước khi người dùng nhập/chọn
+        function updateImagePreview() {
+            const provider = document.getElementById('provider').value;
+            const inputUrl = document.getElementById('image_url').value;
+            const preview = document.getElementById('previewImg');
+
+            if (inputUrl) {
+                preview.src = inputUrl;
+            } else if (DEFAULT_IMAGES[provider]) {
+                preview.src = DEFAULT_IMAGES[provider];
+            } else {
+                preview.src = 'assets/noimage.png';
+            }
+        }
+
+        async function load() {
+            const loading = document.getElementById('loading');
+            loading.classList.remove('hidden');
+            try {
+                const res = await fetch(API, {
+                    headers: { Authorization: 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error('Phiên đăng nhập hết hạn');
+
+                const data = await res.json();
+                const listBody = document.getElementById('list');
+
+                listBody.innerHTML = data.map(a => {
+                    // Tự động gán ảnh mặc định cho dữ liệu cũ nếu image_url bị trống
+                    let displayImg = a.image_url;
+                    if (!displayImg) {
+                        displayImg = DEFAULT_IMAGES[a.provider] || 'assets/noimage.png';
+                    }
+
+                    // Xử lý giá tiền (nếu null thì hiện 0)
+                    const displayPrice = a.price ? Number(a.price).toLocaleString() : '0';
+
+                    return `
+                <tr class="hover:bg-slate-50/80 transition-all group">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl overflow-hidden bg-white border border-slate-100 flex-shrink-0">
+                                <img src="${displayImg}" class="w-full h-full object-contain p-1">
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-700">${a.email}</div>
+                                <div class="text-[10px] text-slate-400 italic">ID: #${a.id.substring(0, 8)}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase ${getProviderClass(a.provider)}">
+                            ${a.provider}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="font-medium text-slate-600">${a.plan || 'Free'}</div>
+                        <div class="text-blue-600 font-bold text-xs">${displayPrice}đ</div>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="del('${a.id}')" class="text-slate-300 hover:text-red-500 p-2 transition-colors">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+                }).join('');
+            } catch (err) {
+                showNotify("Lỗi tải danh sách: " + err.message, true);
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+
+        function getProviderClass(p) {
+            const provider = p?.toLowerCase();
+            if (provider === 'chatgpt') return 'bg-emerald-100 text-emerald-700';
+            if (provider === 'claude') return 'bg-orange-100 text-orange-700';
+            if (provider === 'gemini') return 'bg-blue-100 text-blue-700';
+            if (provider === 'midjourney') return 'bg-purple-100 text-purple-700';
+            return 'bg-slate-100 text-slate-600';
+        }
+
+        async function add() {
+            const btn = document.getElementById('btnAdd');
+            const email = document.getElementById('email').value;
+            const provider = document.getElementById('provider').value;
+            const plan = document.getElementById('plan').value;
+            const price = document.getElementById('price').value;
+            let image_url = document.getElementById('image_url').value;
+
+            if (!email || !provider || !price) return showNotify("Vui lòng nhập Email, Nhà cung cấp và Giá bán", true);
+
+            // Gán ảnh mặc định nếu để trống
+            if (!image_url) {
+                image_url = DEFAULT_IMAGES[provider] || 'assets/noimage.png';
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Đang xử lý...';
+
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        email,
+                        provider,
+                        plan,
+                        price: Number(price),
+                        image_url,
+                        note: "active"
+                    })
+                });
+
+                if (!res.ok) throw new Error('Không thể thêm tài khoản. Vui lòng kiểm tra lại!');
+
+                showNotify('Thêm tài khoản thành công!');
+                load();
+
+                // Reset form
+                document.getElementById('email').value = '';
+                document.getElementById('plan').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('image_url').value = '';
+                updateImagePreview();
+
+            } catch (err) {
+                showNotify(err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm tài khoản vào hệ thống';
+            }
+        }
+
+        async function del(id) {
+            if (!confirm('Bạn có chắc chắn muốn xóa tài khoản này không?')) return;
+            try {
+                const res = await fetch(`${API}/${id}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    showNotify('Đã xóa dữ liệu thành công!');
+                    load();
+                }
+            } catch (err) {
+                showNotify('Lỗi khi xóa dữ liệu', true);
+            }
+        }
+
+        checkAdmin().then(() => load());
+    </script>
+</body>
+
+</html>

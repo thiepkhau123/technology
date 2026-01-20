@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng của bạn | TechShop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes modal-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-modal { animation: modal-in 0.3s ease-out forwards; }
+        .input-field { width: 100%; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; outline: none; transition: all 0.2s; font-size: 0.875rem; text-align: left; }
+        .input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 2px #dbeafe; }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+    <header id="header-placeholder" class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50"></header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-black mb-8 flex items-center gap-3">
+            <i class="fas fa-shopping-bag text-blue-600"></i> Giỏ hàng của bạn
+        </h1>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex-1 space-y-4">
+                <div id="cart-items" class="space-y-4"></div>
+            </div>
+
+            <div class="w-full lg:w-96">
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 sticky top-24">
+                    <h2 class="text-xl font-bold mb-6">Tổng kết đơn hàng</h2>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-slate-500">
+                            <span>Tạm tính:</span>
+                            <span id="subtotal" class="font-semibold text-slate-800">0đ</span>
+                        </div>
+                        <div class="flex justify-between text-slate-500">
+                            <span>Phí dịch vụ:</span>
+                            <span class="text-green-500 font-bold">Miễn phí</span>
+                        </div>
+                        <div class="h-[1px] bg-slate-100 w-full"></div>
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="font-bold text-lg">Tổng cộng:</span>
+                            <span id="total-price" class="text-3xl font-black text-blue-600">0đ</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openPaymentModal()" id="btn-checkout"
+                        class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-600 transition-all shadow-lg active:scale-95 disabled:bg-slate-200 disabled:text-slate-400">
+                        THANH TOÁN NGAY
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="payment-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-[2.5rem] max-w-4xl w-full p-8 md:p-10 shadow-2xl relative animate-modal my-auto">
+            <button onclick="closePaymentModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="text-center md:border-r border-slate-100 md:pr-10">
+                    <h3 class="text-xl font-black text-slate-900 mb-4 uppercase">Quét mã VietQR</h3>
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-dashed border-slate-200 mb-6">
+                        <img id="qr-code-img" src="" alt="QR Code" class="mx-auto w-full max-w-[240px] aspect-square object-contain">
+                    </div>
+                    <div class="space-y-3 text-left bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-500">Tổng tiền:</span>
+                            <b id="modal-amount" class="text-blue-600 text-lg">0đ</b>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-500">Nội dung CK:</span>
+                            <b id="modal-content" class="text-slate-900 uppercase tracking-widest">TS ORDER</b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    <h3 class="text-xl font-black text-slate-900 mb-4 uppercase" id="shipping-title">Thông tin giao hàng</h3>
+                    
+                    <div id="shipping-form-container" class="space-y-4">
+                        <div id="physical-fields" class="hidden space-y-4">
+                            <p class="text-sm text-slate-500 mb-2 font-medium italic">* Vui lòng nhập địa chỉ để chúng tôi giao hàng:</p>
+                            <input type="text" id="ship-name" placeholder="Họ và tên người nhận" class="input-field">
+                            <input type="tel" id="ship-phone" placeholder="Số điện thoại liên hệ" class="input-field">
+                            <textarea id="ship-address" placeholder="Địa chỉ chi tiết (Số nhà, đường, tỉnh...)" class="input-field h-24 resize-none"></textarea>
+                        </div>
+
+                        <div id="digital-fields" class="hidden">
+                            <div class="p-5 bg-blue-50 border border-blue-100 rounded-2xl text-blue-800 flex gap-4">
+                                <i class="fas fa-info-circle text-xl mt-1"></i>
+                                <p class="text-sm leading-relaxed">Đơn hàng của bạn sẽ được gửi <b>Tài khoản/Key</b> trực tiếp vào mục <b>Lịch sử đơn hàng</b> sau khi hệ thống xác nhận.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="confirmCheckout()" id="btn-confirm" class="mt-8 w-full bg-slate-900 text-white py-5 rounded-2xl font-black hover:bg-blue-600 transition shadow-xl active:scale-95 flex items-center justify-center gap-2">
+                        XÁC NHẬN ĐÃ CHUYỂN KHOẢN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        let cartTotal = 0;
+
+        async function loadComponents() {
+            try {
+                const [h, f] = await Promise.all([
+                    fetch('/header.html').then(res => res.text()),
+                    fetch('/footer.html').then(res => res.text())
+                ]);
+                document.getElementById('header-placeholder').innerHTML = h;
+                document.getElementById('footer-placeholder').innerHTML = f;
+                if (typeof checkAuth === "function") await checkAuth();
+                updateCartBadge();
+            } catch (err) { console.error("Lỗi nạp template:", err); }
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCounts = document.querySelectorAll('#cart-count');
+            cartCounts.forEach(el => el.innerText = cart.length);
+        }
+
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const container = document.getElementById('cart-items');
+            const btn = document.getElementById('btn-checkout');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white p-16 rounded-[3rem] text-center border border-dashed border-slate-200">
+                        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-200 text-3xl"><i class="fas fa-shopping-cart"></i></div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Giỏ hàng trống</h3>
+                        <a href="/index.html" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Mua sắm ngay</a>
+                    </div>`;
+                document.getElementById('subtotal').innerText = '0đ';
+                document.getElementById('total-price').innerText = '0đ';
+                if (btn) btn.disabled = true;
+                return;
+            }
+
+            if (btn) btn.disabled = false;
+            cartTotal = 0;
+
+            container.innerHTML = cart.map((item, index) => {
+                const price = Number(item.price || 0);
+                const qty = item.quantity || 1;
+                cartTotal += price * qty;
+                const img = (item.image && item.image !== 'NULL') ? item.image : 'https://via.placeholder.com/100';
+
+                return `
+                    <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-6">
+                        <div class="w-24 h-24 bg-slate-50 rounded-2xl flex-shrink-0 p-2 border border-slate-50">
+                            <img src="${img}" class="w-full h-full object-contain">
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[10px] font-black uppercase text-blue-500 tracking-widest">${item.category}</span>
+                            <h3 class="font-bold text-slate-800 text-lg leading-tight mb-1">${item.name}</h3>
+                            <p class="text-blue-600 font-black">${price.toLocaleString()}đ <span class="text-slate-300 font-medium text-sm">x ${qty}</span></p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="w-12 h-12 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition flex items-center justify-center">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>`;
+            }).join('');
+
+            document.getElementById('subtotal').innerText = cartTotal.toLocaleString() + 'đ';
+            document.getElementById('total-price').innerText = cartTotal.toLocaleString() + 'đ';
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartBadge();
+        }
+
+        function openPaymentModal() {
+            if (!localStorage.getItem('access_token')) {
+                alert("Vui lòng đăng nhập để thanh toán!");
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            // Logic đồng bộ với DB của bạn: phone và component là hàng vật lý
+            const physicalCats = ['phone', 'component'];
+            const hasPhysical = cart.some(item => physicalCats.includes(item.category.toLowerCase()));
+
+            document.getElementById('physical-fields').classList.toggle('hidden', !hasPhysical);
+            document.getElementById('digital-fields').classList.toggle('hidden', hasPhysical);
+            document.getElementById('shipping-title').innerText = hasPhysical ? "ĐỊA CHỈ NHẬN HÀNG" : "NHẬN HÀNG QUA TÀI KHOẢN";
+
+            const orderCode = `TS${Math.floor(100000 + Math.random() * 900000)}`;
+            const qrUrl = `https://img.vietqr.io/image/VCB-1014363257-compact.png?amount=${cartTotal}&addInfo=${orderCode}&accountName=Khau%20Tran%20Ngoc%20Thiep`;
+
+            document.getElementById('qr-code-img').src = qrUrl;
+            document.getElementById('modal-amount').innerText = cartTotal.toLocaleString() + 'đ';
+            document.getElementById('modal-content').innerText = orderCode;
+            document.getElementById('payment-modal').classList.replace('hidden', 'flex');
+        }
+
+        async function confirmCheckout() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderContent = document.getElementById('modal-content').innerText;
+            const token = localStorage.getItem('access_token');
+            
+            const physicalCats = ['phone', 'component'];
+            const hasPhysical = cart.some(item => physicalCats.includes(item.category.toLowerCase()));
+            let finalNote = `Nội dung CK: ${orderContent}`;
+
+            if (hasPhysical) {
+                const name = document.getElementById('ship-name').value.trim();
+                const phone = document.getElementById('ship-phone').value.trim();
+                const addr = document.getElementById('ship-address').value.trim();
+                if (!name || !phone || !addr) { alert("Vui lòng nhập đầy đủ thông tin giao hàng!"); return; }
+                finalNote += ` | Ship: ${name} - ${phone} - ${addr}`;
+            }
+
+            const btn = document.getElementById('btn-confirm');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> ĐANG GỬI...`;
+
+            try {
+                for (const item of cart) {
+                    await fetch(`${API_BASE}/orders`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({
+                            product_id: item.id,
+                            category: item.category,
+                            total_price: item.price * (item.quantity || 1),
+                            payment_method: 'online_banking',
+                            status: 'pending',
+                            note: finalNote
+                        })
+                    });
+                }
+                alert("🎉 Đã đặt hàng thành công!");
+                localStorage.removeItem('cart');
+                window.location.href = '/index.html';
+            } catch (err) { alert("Lỗi kết nối."); btn.disabled = false; btn.innerHTML = "TÔI ĐÃ CHUYỂN KHOẢN"; }
+        }
+
+        function closePaymentModal() { document.getElementById('payment-modal').classList.replace('flex', 'hidden'); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadComponents();
+            renderCart();
+        });
+    </script>
+</body>
+
+</html>

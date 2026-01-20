@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử mua hàng | TechShop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .order-card {
+            animation: fadeIn 0.4s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen text-slate-800">
+
+    <header id="header-placeholder" class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50 min-h-[70px]">
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10 gap-4">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tight">Đơn hàng của tôi</h1>
+                <p class="text-slate-500 mt-2 font-medium">Theo dõi đơn hàng và nhận thông tin sản phẩm</p>
+            </div>
+            <a href="index.html"
+                class="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 text-blue-600 font-bold hover:bg-blue-50 transition-all">
+                <i class="fas fa-shopping-cart text-sm"></i> Tiếp tục mua sắm
+            </a>
+        </div>
+
+        <div id="orders-list" class="space-y-6">
+            <div class="bg-white p-20 rounded-[3rem] text-center border border-slate-100 shadow-sm">
+                <i class="fas fa-circle-notch fa-spin text-4xl text-blue-600 mb-4"></i>
+                <p class="text-slate-500 font-bold animate-pulse">Đang tải lịch sử đơn hàng...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+
+        async function init() {
+            await loadComponents();
+            await fetchOrders();
+        }
+
+        async function loadComponents() {
+            try {
+                const [h, f] = await Promise.all([
+                    fetch('/header.html').then(res => res.text()),
+                    fetch('/footer.html').then(res => res.text())
+                ]);
+                document.getElementById('header-placeholder').innerHTML = h;
+                document.getElementById('footer-placeholder').innerHTML = f;
+
+                const token = localStorage.getItem('access_token');
+                if (!token) { window.location.href = '/login.html'; return; }
+                if (typeof checkAuth === "function") await checkAuth();
+                updateCartBadge();
+            } catch (err) { console.error("Lỗi giao diện:", err); }
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            document.querySelectorAll('#cart-count').forEach(el => el.innerText = cart.length);
+        }
+
+        async function fetchOrders() {
+            const token = localStorage.getItem('access_token');
+            const container = document.getElementById('orders-list');
+
+            try {
+                const res = await fetch(`${API_BASE}/orders`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error("Không thể kết nối đến máy chủ.");
+
+                const orders = await res.json();
+                if (!orders || orders.length === 0) {
+                    container.innerHTML = `<div class="bg-white p-20 rounded-[3rem] text-center border border-dashed border-slate-200">
+                        <h3 class="text-xl font-bold text-slate-800">Chưa có đơn hàng</h3>
+                    </div>`;
+                    return;
+                }
+
+                let productMap = {};
+                try {
+                    const pRes = await fetch(`${API_BASE}/products/all`);
+                    if (pRes.ok) {
+                        const products = await pRes.json();
+                        productMap = products.reduce((acc, p) => ({ ...acc, [p.id]: p.name }), {});
+                    }
+                } catch (pErr) { console.warn("Sử dụng ID thay cho tên sản phẩm."); }
+
+                container.innerHTML = orders.reverse().map((order, index) => {
+                    const isAccount = order.category === 'account';
+                    const productName = productMap[order.product_id] || `Mã sản phẩm #${order.product_id}`;
+
+                    let statusClass = 'status-pending';
+                    let statusText = 'Đang xử lý';
+                    if (order.status === 'completed') { statusClass = 'status-completed'; statusText = 'Thành công'; }
+                    if (order.status === 'cancelled') { statusClass = 'status-cancelled'; statusText = 'Đã hủy'; }
+
+                    return `
+                    <div class="order-card bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden" style="animation-delay: ${index * 0.1}s">
+                        <div class="p-6 md:p-8">
+                            <div class="flex flex-col md:flex-row justify-between gap-6">
+                                <div class="flex gap-6">
+                                    <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-blue-600 text-2xl border border-slate-100 shadow-inner">
+                                        <i class="fas ${isAccount ? 'fa-bolt' : 'fa-box'}"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-[10px] font-black uppercase text-blue-500 tracking-widest">${order.category}</span>
+                                            <span class="text-slate-300">•</span>
+                                            <span class="text-xs text-slate-400 font-bold tracking-tighter uppercase">ID: ${order.id}</span>
+                                        </div>
+                                        <h3 class="font-bold text-slate-900 text-lg mb-1">Đơn hàng: ${productName}</h3>
+                                        <p class="text-slate-500 text-xs flex items-center gap-2">
+                                            <i class="far fa-clock"></i> ${new Date(order.created_at).toLocaleString('vi-VN')}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col md:items-end justify-center gap-3">
+                                    <div class="text-2xl font-black text-slate-900">${Number(order.total_price).toLocaleString()}đ</div>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 p-4 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-slate-600">
+                                <b>Ghi chú/Địa chỉ:</b> <span id="note-${order.id}">${order.note || 'Không có thông tin.'}</span>
+                            </div>
+
+                            <div class="mt-6 pt-6 border-t border-dashed border-slate-100">
+                                ${order.status === 'completed' ? `
+    ${isAccount ? `
+        <div class="bg-blue-600 rounded-3xl p-6 text-white shadow-xl shadow-blue-200">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center"><i class="fas fa-key"></i></div>
+                    <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest opacity-80">Thông tin tài khoản/Key</p>
+                        <p class="font-mono font-black text-lg break-all">${order.delivery_data || 'Liên hệ hỗ trợ'}</p>
+                    </div>
+                </div>
+                <button 
+                    onclick="copyToClipboard(this)" 
+                    data-content="${order.delivery_data || ''}" 
+                    class="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-sm hover:bg-blue-50 transition active:scale-95">
+                    SAO CHÉP
+                </button>
+            </div>
+        </div>
+                                    ` : `
+                                        <div class="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex items-center gap-4">
+                                            <div class="w-12 h-12 bg-emerald-500 text-white rounded-2xl flex items-center justify-center"><i class="fas fa-truck-fast"></i></div>
+                                            <div>
+                                                <p class="text-emerald-800 font-bold">Hàng đã được bàn giao!</p>
+                                                <p class="text-emerald-600 text-sm">Mã vận đơn: <b>${order.delivery_data || 'Đang cập nhật'}</b></p>
+                                            </div>
+                                        </div>
+                                    `}
+                                ` : order.status === 'pending' ? `
+                                    <div class="flex flex-wrap gap-3">
+                                        <button onclick="updateAddress('${order.id}')" class="flex-1 bg-slate-900 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-slate-800 transition active:scale-95">
+                                            <i class="fas fa-map-marker-alt mr-2"></i> CẬP NHẬT ĐỊA CHỈ
+                                        </button>
+                                        <button onclick="handleCancelOrder('${order.id}')" class="flex-1 bg-red-50 text-red-600 border border-red-100 px-6 py-3 rounded-2xl font-bold text-sm hover:bg-red-100 transition active:scale-95">
+                                            <i class="fas fa-times mr-2"></i> HỦY ĐƠN HÀNG
+                                        </button>
+                                    </div>
+                                ` : `
+                                    <div class="p-4 bg-slate-100 rounded-2xl text-center text-slate-500 text-xs font-bold uppercase tracking-widest">
+                                        Đơn hàng đã kết thúc
+                                    </div>
+                                `}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+            } catch (err) {
+                container.innerHTML = `<div class="text-center p-10 bg-white rounded-3xl text-red-500 font-bold">Lỗi: ${err.message}</div>`;
+            }
+        }
+
+        async function handleCancelOrder(orderId) {
+            if (!confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?")) return;
+            const token = localStorage.getItem('access_token');
+            try {
+                const res = await fetch(`${API_BASE}/orders/${orderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'cancelled' })
+                });
+                if (res.ok) {
+                    alert("Hủy đơn hàng thành công!");
+                    fetchOrders();
+                } else {
+                    alert("Không thể hủy đơn hàng vào lúc này.");
+                }
+            } catch (err) { alert("Lỗi kết nối máy chủ."); }
+        }
+
+        async function updateAddress(orderId) {
+            const newAddress = prompt("Nhập địa chỉ nhận hàng hoặc thông tin liên hệ mới:");
+            if (!newAddress) return;
+
+            const token = localStorage.getItem('access_token');
+            try {
+                const res = await fetch(`${API_BASE}/orders/${orderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ note: newAddress })
+                });
+                if (res.ok) {
+                    alert("Cập nhật thông tin thành công!");
+                    document.getElementById(`note-${orderId}`).innerText = newAddress;
+                }
+            } catch (err) { alert("Lỗi cập nhật thông tin."); }
+        }
+
+        function copyToClipboard(button) {
+            // Lấy dữ liệu từ attribute 'data-content' của chính nút đó
+            const text = button.getAttribute('data-content');
+
+            if (!text || text === 'undefined' || text === 'null') {
+                alert("Không có nội dung để sao chép!");
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                // Hiệu ứng đổi chữ khi thành công
+                const originalText = button.innerText;
+                button.innerText = "ĐÃ CHÉP!";
+                button.style.backgroundColor = "#ecfdf5"; // emerald-50
+                button.style.color = "#10b981"; // emerald-500
+
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.style.backgroundColor = "white";
+                    button.style.color = "#2563eb"; // blue-600
+                }, 2000);
+            }).catch(err => {
+                console.error("Lỗi copy: ", err);
+                // Fallback nếu trình duyệt không hỗ trợ Clipboard API
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                alert("Đã sao chép nội dung!");
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
