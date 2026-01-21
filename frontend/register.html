@@ -56,10 +56,23 @@
     const email = document.getElementById('email').value
     const password = document.getElementById('password').value
 
-    const { error } = await supabase.auth.signUp({ email, password })
+    // Lấy URL hiện tại của trang web (tự động nhận diện localhost hoặc vercel)
+    const redirectUrl = window.location.origin + '/login.html'
 
-    if (error) alert(error.message)
-    else alert('Đăng ký thành công – kiểm tra email')
+    const { error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        // Thêm dòng này để điều hướng đúng sau khi confirm email
+        emailRedirectTo: redirectUrl 
+      }
+    })
+
+    if (error) {
+      alert('Lỗi: ' + error.message)
+    } else {
+      alert('Đăng ký thành công! Vui lòng kiểm tra hộp thư Gmail để xác nhận tài khoản.')
+    }
   }
 </script>
 
