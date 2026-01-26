@@ -29,7 +29,7 @@
                 <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Dashboard</span>
             </a>
             <a href="admin_orders.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40">
-                <i class="fas fa-shopping-basket w-5"></i><span class="font-medium">Quản lý đơn hàng</span>
+                <i class="fas fa-shopping-basket w-5 "></i><span class="font-medium">Quản lý đơn hàng</span>
                 <span id="order-badge" class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
             </a>
             <div class="h-4"></div>
@@ -69,8 +69,8 @@
                     <input type="text" id="orderSearch" oninput="renderTable()" placeholder="Tìm mã đơn, tên..." 
                         class="bg-slate-100 border-none rounded-full py-2 pl-9 pr-4 text-xs focus:ring-2 focus:ring-blue-500/20 w-64 transition-all">
                 </div>
-                <button onclick="loadAdminOrders()" class="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                    <i class="fas fa-sync-alt text-sm"></i>
+                <button onclick="loadAdminOrders()" class="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-90">
+                    <i id="refresh-icon" class="fas fa-sync-alt text-sm"></i>
                 </button>
             </div>
         </header>
@@ -92,9 +92,7 @@
                             </tbody>
                     </table>
                 </div>
-
-                <div id="pagination-controls" class="p-6 flex justify-between items-center bg-slate-50/30 border-t border-slate-100 mt-auto">
-                    </div>
+                <div id="pagination-controls" class="p-6 flex justify-between items-center bg-slate-50/30 border-t border-slate-100 mt-auto"></div>
             </div>
         </div>
     </main>
@@ -134,19 +132,22 @@
     <script src="js/auth.js"></script>
     <script>
         const API_BASE = 'http://localhost:4000/api';
-        const REFRESH_INTERVAL = 30000; // 45 giây làm mới 1 lần
+        const REFRESH_INTERVAL = 60000; // Đặt 60 giây để tránh spam API quá mức
         const ITEMS_PER_PAGE = 8;
         
         let refreshTimer = null;
         let currentPage = 1;
         let allOrders = [];
 
-        // Hiển thị ngày tháng tiếng Việt
+        // Hiển thị ngày tháng
         const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
         const now = new Date();
         document.getElementById('current-date').innerText = `${days[now.getDay()]}, ${now.getDate()} tháng ${(now.getMonth() + 1)} năm ${now.getFullYear()}`;
 
         async function loadAdminOrders() {
+            const icon = document.getElementById('refresh-icon');
+            if(icon) icon.classList.add('fa-spin'); // Bắt đầu xoay icon khi load
+
             const listContainer = document.getElementById('admin-orders-list');
             const token = localStorage.getItem('access_token') || localStorage.getItem('token');
 
@@ -155,12 +156,11 @@
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!res.ok) throw new Error("Không thể tải đơn hàng");
+                if (!res.ok) throw new Error("Phiên làm việc hết hạn");
                 
                 const orders = await res.json();
                 allOrders = orders.sort((a, b) => b.id.localeCompare(a.id));
 
-                // Cập nhật số lượng đơn chờ duyệt
                 const pendingCount = allOrders.filter(o => o.status === 'pending').length;
                 const badge = document.getElementById('order-badge');
                 if (badge) {
@@ -169,8 +169,12 @@
                 }
 
                 renderTable();
+                console.log("Dữ liệu đã được cập nhật lúc: " + new Date().toLocaleTimeString());
             } catch (err) {
-                listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-slate-400 font-medium"><i class="fas fa-exclamation-circle mr-2"></i> ${err.message}</td></tr>`;
+                listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-red-400 font-medium"><i class="fas fa-exclamation-circle mr-2"></i> ${err.message}</td></tr>`;
+            } finally {
+                // Tắt hiệu ứng xoay sau 800ms để người dùng kịp thấy
+                setTimeout(() => { if(icon) icon.classList.remove('fa-spin'); }, 800);
             }
         }
 
@@ -178,7 +182,6 @@
             const listContainer = document.getElementById('admin-orders-list');
             const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
             
-            // Lọc theo tìm kiếm
             const filteredOrders = allOrders.filter(o => 
                 o.id.toLowerCase().includes(searchTerm) || 
                 (o.profiles?.email || '').toLowerCase().includes(searchTerm) ||
@@ -186,7 +189,7 @@
             );
 
             if (filteredOrders.length === 0) {
-                listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-24 text-slate-300 font-medium italic">Không có dữ liệu phù hợp...</td></tr>';
+                listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-24 text-slate-300 font-medium italic">Không tìm thấy đơn hàng nào...</td></tr>';
                 document.getElementById('pagination-controls').innerHTML = '';
                 return;
             }
@@ -198,7 +201,6 @@
                 const isPending = order.status === 'pending';
                 const email = order.profiles?.email || 'Guest';
                 
-                // Styling cho từng loại danh mục
                 let catStyle = 'bg-slate-100 text-slate-600';
                 if(order.category === 'account') catStyle = 'bg-blue-50 text-blue-600';
                 if(order.category === 'phone') catStyle = 'bg-indigo-50 text-indigo-600';
@@ -214,9 +216,7 @@
                     </td>
                     <td class="py-5 px-6">
                         <div class="font-bold text-slate-700 text-xs mb-1 line-clamp-1">${order.product_name || 'Sản phẩm'}</div>
-                        <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase ${catStyle}">
-                            ${order.category || 'General'}
-                        </span>
+                        <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase ${catStyle}">${order.category || 'General'}</span>
                     </td>
                     <td class="py-5 px-6">
                         <div class="font-black text-slate-900 text-sm">${Number(order.total_price).toLocaleString()}đ</div>
@@ -249,8 +249,7 @@
         function renderPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
             const container = document.getElementById('pagination-controls');
-            
-            if (totalPages <= 1) { container.innerHTML = '<span class="text-xs text-slate-400 font-bold uppercase">Hiển thị tất cả</span>'; return; }
+            if (totalPages <= 1) { container.innerHTML = '<span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Hiển thị tất cả</span>'; return; }
 
             container.innerHTML = `
                 <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Trang ${currentPage} / ${totalPages}</div>
@@ -267,15 +266,15 @@
         }
 
         function openApproveModal(id, category) {
-            clearInterval(refreshTimer);
+            // Tạm dừng tự động load khi đang nhập liệu để không bị reset trang
+            stopAutoRefresh(); 
+            
             document.getElementById('modal-order-id').value = id;
-            
             const desc = {
-                'account': 'Vui lòng nhập Thông tin tài khoản hoặc Mã Key bản quyền để gửi đến mail khách hàng.',
-                'phone': 'Vui lòng nhập Mã vận đơn của đơn vị vận chuyển hoặc thông tin hẹn ngày giao máy.',
-                'component': 'Vui lòng nhập Mã theo dõi linh kiện hoặc Serial Number sản phẩm.'
+                'account': 'Nhập Thông tin tài khoản hoặc Mã Key bản quyền.',
+                'phone': 'Nhập Mã vận đơn hoặc thông tin ngày giao máy.',
+                'component': 'Nhập Mã theo dõi linh kiện hoặc Serial Number.'
             };
-            
             document.getElementById('modal-desc').innerText = desc[category] || desc['account'];
             document.getElementById('modal-delivery-data').value = "";
             document.getElementById('approve-modal').classList.replace('hidden', 'flex');
@@ -283,7 +282,7 @@
 
         function closeModal() {
             document.getElementById('approve-modal').classList.replace('flex', 'hidden');
-            startAutoRefresh();
+            startAutoRefresh(); // Chạy lại tự động load khi đóng modal
         }
 
         async function submitApproval() {
@@ -292,7 +291,7 @@
             const token = localStorage.getItem('access_token') || localStorage.getItem('token');
             const btn = document.getElementById('btn-submit-approve');
 
-            if (!data.trim()) return alert("Dữ liệu bàn giao không được để trống!");
+            if (!data.trim()) return alert("Vui lòng nhập dữ liệu bàn giao!");
 
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý';
@@ -308,7 +307,7 @@
                     closeModal();
                     loadAdminOrders();
                 } else {
-                    alert("Có lỗi xảy ra khi duyệt đơn.");
+                    alert("Lỗi khi duyệt đơn.");
                 }
             } catch (err) {
                 alert("Lỗi kết nối máy chủ.");
@@ -318,16 +317,23 @@
             }
         }
 
+        // --- HÀM XỬ LÝ TỰ ĐỘNG LOAD ---
         function startAutoRefresh() {
             if (refreshTimer) clearInterval(refreshTimer);
-            refreshTimer = setInterval(() => loadAdminOrders(), REFRESH_INTERVAL);
+            refreshTimer = setInterval(() => {
+                loadAdminOrders();
+            }, REFRESH_INTERVAL);
         }
 
-        // Khởi chạy
-        document.addEventListener('DOMContentLoaded', () => {
+        function stopAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+        }
+
+        // Khởi chạy khi trang load xong
+        window.onload = () => {
             loadAdminOrders();
             startAutoRefresh();
-        });
+        };
     </script>
 </body>
 </html>

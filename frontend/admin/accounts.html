@@ -34,39 +34,40 @@
 
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
-    <aside id="sidebar"
-        class="fixed inset-y-0 left-0 w-64 bg-slate-900 text-slate-300 transform -translate-x-full transition-transform duration-300 z-50 md:translate-x-0 md:static md:flex md:flex-col border-r border-slate-800">
-        <div class="p-6 hidden md:block border-b border-slate-800/50">
-            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
-                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
+    <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
+        <div class="p-6 border-b border-slate-800/50 text-center md:text-left">
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs font-normal">Admin</span></h1>
         </div>
-
-        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
-            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
-            <a href="admin.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition"><i
-                    class="fas fa-chart-pie w-5"></i> <span class="font-medium">Dashboard</span></a>
-            <a href="admin_orders.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition"><i
-                    class="fas fa-shopping-basket w-5"></i> <span class="font-medium">Quản lý đơn hàng</span></a>
-            <a href="accounts.html"
-                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20"><i
-                    class="fas fa-robot w-5"></i> <span class="font-medium">Account AI</span></a>
-            <a href="phone_lock.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition"><i
-                    class="fas fa-mobile-alt w-5"></i> <span class="font-medium">Điện thoại lock</span></a>
-            <a href="components.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition"><i
-                    class="fas fa-microchip w-5"></i> <span class="font-medium">Linh Kiện</span></a>
-            <a href="../index.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition mt-10"><i
-                    class="fas fa-home w-5"></i> <span class="font-medium">Về trang chủ</span></a>
+        <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto no-scrollbar">
+            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Hệ thống</p>
+            <a href="admin.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="admin_orders.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-shopping-basket w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Quản lý đơn hàng</span>
+                <span id="order-badge" class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
+            </a>
+            <div class="h-4"></div>
+            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Sản phẩm</p>
+            <a href="accounts.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40 group">
+                <i class="fas fa-robot w-5"></i><span class="font-medium text-sm">Account AI</span>
+            </a>
+            <a href="phone_lock.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Điện thoại lock</span>
+            </a>
+            <a href="components.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-microchip w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Linh Kiện</span>
+            </a>
+            <div class="pt-10">
+                <a href="../index.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
+                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang chủ</span>
+                </a>
+            </div>
         </nav>
-
         <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()"
-                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-sm"><i
-                    class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
+                <i class="fas fa-power-off"></i> Đăng xuất
+            </button>
         </div>
     </aside>
 
