@@ -13,4 +13,7 @@ router.post('/', requireAdmin, accountController.createAccount);
 // DELETE: Xóa account
 router.delete('/:id', requireAdmin, accountController.deleteAccount);
 
+// PUT: Cập nhật account
+router.put('/:id', requireAdmin, accountController.updateAccount);
+
 export default router;

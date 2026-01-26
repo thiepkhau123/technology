@@ -22,13 +22,13 @@ const componentController = {
       const { name, category, stock, price, image_url } = req.body;
       const { data, error } = await supabase
         .from('components')
-        .insert([{ 
-          name, 
-          category, 
-          stock: parseInt(stock), 
-          price: parseFloat(price) || 0, 
+        .insert([{
+          name,
+          category,
+          stock: parseInt(stock),
+          price: parseFloat(price) || 0,
           image_url,
-          is_active: true 
+          is_active: true
         }])
         .select();
 
@@ -53,7 +53,34 @@ const componentController = {
     } catch (error) {
       res.status(400).json({ message: "Lỗi khi xóa linh kiện", error: error.message });
     }
-  }
+  },
+
+  // Thêm hàm này vào trong object componentController
+  updateComponent: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, category, stock, price, image_url } = req.body;
+
+      const { data, error } = await supabase
+        .from('components')
+        .update({
+          name,
+          category,
+          stock: parseInt(stock),
+          price: parseFloat(price) || 0,
+          image_url
+        })
+        .eq('id', id)
+        .select();
+
+      if (error) throw error;
+      if (data.length === 0) return res.status(404).json({ message: "Không tìm thấy linh kiện" });
+
+      res.status(200).json(data[0]);
+    } catch (error) {
+      res.status(400).json({ message: "Lỗi khi cập nhật", error: error.message });
+    }
+  },
 };
 
 export default componentController;

@@ -9,85 +9,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        #approve-modal.flex {
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #approve-modal.flex { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col md:flex-row">
 
-    <aside id="sidebar"
-        class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen">
+    <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen">
         <div class="p-6 border-b border-slate-800/50">
-            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
-                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs font-normal">Admin</span></h1>
         </div>
 
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
-
-            <a href="admin.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+            <a href="admin.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-chart-pie w-5"></i><span class="font-medium">Dashboard</span>
             </a>
-
-            <a href="admin_orders.html"
-                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
+            <a href="admin_orders.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/20">
                 <i class="fas fa-shopping-basket w-5"></i><span class="font-medium">Quản lý đơn hàng</span>
                 <span id="order-badge" class="ml-auto bg-red-500 text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
             </a>
-
-            <a href="accounts.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+            <a href="accounts.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-robot w-5"></i><span class="font-medium">Account AI</span>
             </a>
-
-            <a href="phone_lock.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+            <a href="phone_lock.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-mobile-alt w-5"></i><span class="font-medium">Điện thoại lock</span>
             </a>
-
-            <a href="components.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+            <a href="components.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-microchip w-5"></i><span class="font-medium">Linh Kiện</span>
             </a>
-
-            <a href="../index.html"
-                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
+            <a href="../index.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-home w-5"></i><span class="font-medium">Về trang chủ</span>
             </a>
         </nav>
 
         <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()"
-                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition font-bold text-sm">
+            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition font-bold text-sm">
                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
             </button>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col">
-        <header
-            class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-40">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-40">
             <h2 class="font-bold text-slate-800 uppercase text-xs tracking-widest">Hệ thống bàn giao sản phẩm</h2>
             <div class="flex items-center gap-4">
                 <span class="text-xs font-medium text-slate-500" id="current-date"></span>
@@ -95,7 +62,7 @@
         </header>
 
         <div class="p-4 md:p-8">
-            <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden flex flex-col min-h-[600px]">
                 <div class="p-6 border-b border-slate-50 flex justify-between items-center">
                     <h3 class="font-bold text-slate-800">Danh sách đơn hàng cần xử lý</h3>
                     <button onclick="loadAdminOrders()" class="text-blue-600 text-sm font-bold hover:underline">
@@ -103,11 +70,10 @@
                     </button>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="flex-1 overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr
-                                class="text-[10px] uppercase text-slate-400 font-bold border-b border-slate-50 bg-slate-50/50">
+                            <tr class="text-[10px] uppercase text-slate-400 font-bold border-b border-slate-50 bg-slate-50/50">
                                 <th class="py-4 px-6">Khách hàng</th>
                                 <th class="py-4 px-6">Sản phẩm</th>
                                 <th class="py-4 px-6">Thanh toán</th>
@@ -116,36 +82,36 @@
                             </tr>
                         </thead>
                         <tbody id="admin-orders-list" class="text-sm divide-y divide-slate-50">
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
+
+                <div id="pagination-controls" class="p-6 flex justify-center items-center gap-2 bg-slate-50/50 border-t border-slate-100">
+                    </div>
             </div>
         </div>
     </main>
 
-    <div id="approve-modal"
-        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div id="approve-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl scale-100">
             <div class="flex justify-between items-start mb-6">
                 <div>
                     <h3 class="text-2xl font-black text-slate-900 mb-2">Bàn giao đơn hàng</h3>
                     <p id="modal-desc" class="text-slate-500 text-sm"></p>
                 </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i
-                        class="fas fa-times text-xl"></i></button>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
             </div>
 
             <input type="hidden" id="modal-order-id">
-            <textarea id="modal-delivery-data"
-                class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl h-40 outline-none focus:border-blue-500 transition font-mono text-sm"
-                placeholder="Nhập Key, Account hoặc Mã vận đơn..."></textarea>
+            <textarea id="modal-delivery-data" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl h-40 outline-none focus:border-blue-500 transition font-mono text-sm" placeholder="Nhập Key, Account hoặc Mã vận đơn..."></textarea>
 
             <div class="flex gap-3 mt-6">
-                <button onclick="closeModal()"
-                    class="flex-1 py-4 font-bold text-slate-500 hover:bg-slate-100 rounded-2xl transition">Hủy</button>
-                <button id="btn-submit-approve" onclick="submitApproval()"
-                    class="flex-1 py-4 font-bold bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition">XÁC
-                    NHẬN DUYỆT</button>
+                <button onclick="closeModal()" class="flex-1 py-4 font-bold text-slate-500 hover:bg-slate-100 rounded-2xl transition">Hủy</button>
+                <button id="btn-submit-approve" onclick="submitApproval()" class="flex-1 py-4 font-bold bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition">
+                    XÁC NHẬN DUYỆT
+                </button>
             </div>
         </div>
     </div>
@@ -153,13 +119,18 @@
     <script src="js/auth.js"></script>
     <script>
         const API_BASE = 'http://localhost:4000/api';
+        const REFRESH_INTERVAL = 30000;
+        const ITEMS_PER_PAGE = 6;
+        
+        let refreshTimer = null;
+        let currentPage = 1;
+        let allOrders = [];
 
-        // Cập nhật ngày tháng (Đồng bộ admin.html)
+        // Cập nhật ngày tháng
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
 
-        // Hàm Logout (Đồng bộ admin.html)
         function logout() {
             localStorage.clear();
             window.location.href = '../index.html';
@@ -167,97 +138,133 @@
 
         async function loadAdminOrders() {
             const listContainer = document.getElementById('admin-orders-list');
-            // Thử lấy cả 2 loại key token để đảm bảo không lỗi 401
             const token = localStorage.getItem('token') || localStorage.getItem('access_token');
 
             if (!token) {
-                listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-20 text-red-500">Phiên đăng nhập hết hạn. Đang quay lại trang chủ...</td></tr>';
-                setTimeout(() => window.location.href = '../index.html', 2000);
+                listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-20 text-red-500">Hết hạn phiên làm việc...</td></tr>';
+                setTimeout(() => window.location.href = '../login.html', 2000);
                 return;
             }
-
-            listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-20"><i class="fas fa-spinner fa-spin text-blue-600 text-2xl"></i></td></tr>';
 
             try {
                 const res = await fetch(`${API_BASE}/orders/admin/all`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (res.status === 401 || res.status === 403) {
-                    throw new Error("Bạn không có quyền truy cập trang này.");
-                }
-
+                if (res.status === 401 || res.status === 403) throw new Error("Không có quyền truy cập.");
+                
                 const orders = await res.json();
+                // Sắp xếp đơn mới nhất lên đầu
+                allOrders = orders.sort((a, b) => b.id.localeCompare(a.id));
 
-                // Cập nhật Badge sidebar (Đồng bộ admin.html)
-                const pendingCount = orders.filter(o => o.status === 'pending').length;
+                // Cập nhật Badge
+                const pendingCount = allOrders.filter(o => o.status === 'pending').length;
                 const badge = document.getElementById('order-badge');
-                badge.innerText = pendingCount;
-                badge.classList.toggle('hidden', pendingCount === 0);
-
-                if (orders.length === 0) {
-                    listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-20 text-slate-400">Chưa có đơn hàng nào được tạo.</td></tr>';
-                    return;
+                if (badge) {
+                    badge.innerText = pendingCount;
+                    badge.classList.toggle('hidden', pendingCount === 0);
                 }
 
-                listContainer.innerHTML = orders.map(order => {
-                    const isPending = order.status === 'pending';
-                    // Kiểm tra bảng profiles (đã sửa từ users -> profiles)
-                    const userEmail = order.profiles?.email || 'Khách vãng lai';
+                renderTable();
+            } catch (err) {
+                listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-20 text-red-500">Lỗi: ${err.message}</td></tr>`;
+            }
+        }
 
-                    return `
-                <tr class="hover:bg-slate-50/50 transition">
+        function renderTable() {
+            const listContainer = document.getElementById('admin-orders-list');
+            if (allOrders.length === 0) {
+                listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-20 text-slate-400 font-medium">Chưa có đơn hàng nào.</td></tr>';
+                document.getElementById('pagination-controls').innerHTML = '';
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const paginatedOrders = allOrders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            listContainer.innerHTML = paginatedOrders.map(order => {
+                const isPending = order.status === 'pending';
+                const fullEmail = order.profiles?.email || 'Khách vãng lai';
+                const displayName = fullEmail.split('@')[0];
+                const categoryClass = order.category === 'account' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600';
+
+                return `
+                <tr class="hover:bg-slate-50/50 transition border-b border-slate-50">
                     <td class="py-5 px-6">
-                        <div class="font-bold text-slate-800">${userEmail}</div>
-                        <div class="text-[10px] text-slate-400 uppercase tracking-tighter">ID: #${order.id.slice(0, 8)}</div>
+                        <div class="font-bold text-slate-800 capitalize">${displayName}</div>
+                        <div class="text-[10px] text-blue-500 font-black mt-1">#${order.id.slice(0, 8)}</div>
                     </td>
                     <td class="py-5 px-6">
-                        <div class="font-medium text-slate-700">${order.product_id || 'Sản phẩm'}</div>
-                        <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase bg-blue-50 text-blue-600">
+                        <div class="font-semibold text-slate-700 mb-1">${order.product_name || 'Sản phẩm'}</div>
+                        <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase ${categoryClass}">
                             ${order.category || 'Hàng hóa'}
                         </span>
                     </td>
                     <td class="py-5 px-6">
                         <div class="font-black text-slate-900">${Number(order.total_price).toLocaleString()}đ</div>
-                        <div class="text-[10px] text-slate-400 font-bold uppercase">${order.payment_method || 'CK'}</div>
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${order.payment_method || 'CK'}</div>
                     </td>
                     <td class="py-5 px-6">
                         <p class="text-xs text-slate-500 italic max-w-[150px] truncate" title="${order.note || ''}">${order.note || '---'}</p>
                     </td>
                     <td class="py-5 px-6 text-right">
                         ${isPending ? `
-                            <div class="flex justify-end gap-2">
-                                <button onclick="openApproveModal('${order.id}', '${order.category}')" 
-                                        class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 transition shadow-md active:scale-95">
-                                    DUYỆT ĐƠN
-                                </button>
-                            </div>
+                            <button onclick="openApproveModal('${order.id}', '${order.category}')" 
+                                    class="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-700 transition active:scale-95 shadow-md shadow-blue-100">
+                                DUYỆT ĐƠN
+                            </button>
                         ` : `
-                            <div class="flex flex-col items-end">
-                                <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase ${order.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}">
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="px-3 py-1 rounded-lg text-[10px] font-black uppercase ${order.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
                                     ${order.status === 'completed' ? 'Thành công' : 'Đã hủy'}
                                 </span>
+                                <span class="text-[10px] text-slate-400 font-medium">${new Date(order.created_at).toLocaleDateString('vi-VN')}</span>
                             </div>
                         `}
                     </td>
                 </tr>`;
-                }).join('');
-            } catch (err) {
-                listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-20 text-red-500">Lỗi kết nối: ${err.message}</td></tr>`;
+            }).join('');
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(allOrders.length / ITEMS_PER_PAGE);
+            const container = document.getElementById('pagination-controls');
+            
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
             }
+
+            container.innerHTML = `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 disabled:opacity-30 hover:bg-white transition"><i class="fas fa-chevron-left"></i></button>
+                <span class="text-sm font-bold text-slate-600 px-4">Trang ${currentPage} / ${totalPages}</span>
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 disabled:opacity-30 hover:bg-white transition"><i class="fas fa-chevron-right"></i></button>
+            `;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderTable();
+        }
+
+        function startAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = setInterval(() => loadAdminOrders(), REFRESH_INTERVAL);
         }
 
         function openApproveModal(id, category) {
+            clearInterval(refreshTimer); // Dừng làm mới khi đang nhập liệu
             document.getElementById('modal-order-id').value = id;
-            document.getElementById('modal-desc').innerText = category === 'account'
-                ? "Vui lòng nhập tài khoản/key bàn giao cho khách."
-                : "Vui lòng nhập mã vận đơn hoặc thông tin giao nhận.";
+            document.getElementById('modal-desc').innerText = category === 'account' ? "Nhập tài khoản/key bàn giao cho khách." : "Nhập mã vận đơn/thông tin giao nhận.";
             document.getElementById('modal-delivery-data').value = "";
             document.getElementById('approve-modal').classList.replace('hidden', 'flex');
         }
 
         function closeModal() {
             document.getElementById('approve-modal').classList.replace('flex', 'hidden');
+            startAutoRefresh(); // Chạy lại timer
         }
 
         async function submitApproval() {
@@ -272,43 +279,37 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
             try {
-                // SỬA TẠI ĐÂY: Chuyển POST thành PUT để khớp với Backend
                 const res = await fetch(`${API_BASE}/orders/admin/${id}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        status: 'completed',
-                        delivery_data: data
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ status: 'completed', delivery_data: data })
                 });
 
-                const result = await res.json();
-
                 if (res.ok) {
-                    alert("Bàn giao đơn hàng thành công!");
+                    alert("Bàn giao thành công!");
                     closeModal();
                     loadAdminOrders();
                 } else {
-                    alert("Lỗi: " + (result.message || "Không thể cập nhật đơn hàng."));
+                    alert("Lỗi cập nhật đơn hàng.");
                 }
             } catch (err) {
-                console.error("Lỗi fetch:", err);
                 alert("Lỗi kết nối server.");
             } finally {
                 btn.disabled = false;
                 btn.innerText = 'XÁC NHẬN DUYỆT';
             }
         }
+
         // Khởi tạo
         if (typeof checkAdmin === 'function') {
-            checkAdmin().then(() => loadAdminOrders());
+            checkAdmin().then(() => {
+                loadAdminOrders();
+                startAutoRefresh();
+            });
         } else {
             loadAdminOrders();
+            startAutoRefresh();
         }
     </script>
 </body>
-
 </html>

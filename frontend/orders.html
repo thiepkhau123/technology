@@ -113,7 +113,14 @@
 
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            document.querySelectorAll('#cart-count').forEach(el => el.innerText = cart.length);
+            // Tính tổng số lượng thay vì chỉ đếm số loại sản phẩm
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+            document.querySelectorAll('#cart-count').forEach(el => {
+                el.innerText = totalItems;
+                if (totalItems > 0) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
         }
 
         async function fetchOrders() {
@@ -143,7 +150,8 @@
                     }
                 } catch (pErr) { console.warn("Sử dụng ID thay cho tên sản phẩm."); }
 
-                container.innerHTML = orders.reverse().map((order, index) => {
+                const sortedOrders = orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                container.innerHTML = sortedOrders.map((order, index) => {
                     const isAccount = order.category === 'account';
                     const productName = productMap[order.product_id] || `Mã sản phẩm #${order.product_id}`;
 

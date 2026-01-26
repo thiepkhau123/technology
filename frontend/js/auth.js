@@ -45,8 +45,9 @@ async function register() {
             return
         }
 
-        alert('Đăng ký thành công, vui lòng đăng nhập')
-        location.href = 'login.html'
+        alert('Đăng ký thành công!');
+        localStorage.setItem('remembered_email', email); // Lưu tạm email
+        location.href = 'login.html';
     } catch (err) {
         console.error("Register error:", err)
     }
@@ -90,11 +91,11 @@ async function checkAuth() {
 
         // 2. XỬ LÝ TÊN HIỂN THỊ (Sửa lỗi NULL/Undefined từ database của bạn)
         let displayName = "Thành viên";
-        
+
         // Nếu full_name có dữ liệu và không phải chuỗi "NULL"
         if (user.full_name && user.full_name !== "NULL") {
             displayName = user.full_name;
-        } 
+        }
         // Nếu full_name null, lấy phần tên từ email (ví dụ: ngocthiep213)
         else if (user.email) {
             displayName = user.email.split('@')[0];
@@ -148,3 +149,10 @@ async function checkAdmin() {
         console.error("Admin check error:", err);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Nếu không phải trang admin thì chạy checkAuth
+    if (!window.location.pathname.includes('admin')) {
+        checkAuth();
+    }
+});

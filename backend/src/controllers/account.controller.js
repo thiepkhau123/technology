@@ -72,7 +72,21 @@ const accountController = {
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
-  }
+  },
+  updateAccount: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, category, stock, price, image_url, login_info } = req.body;
+      const { data, error } = await supabase
+        .from('accounts')
+        .update({ name, category, stock, price, image_url, login_info })
+        .eq('id', id).select();
+      if (error) throw error;
+      res.status(200).json(data[0]);
+    } catch (error) {
+      res.status(400).json({ message: "Lỗi cập nhật", error: error.message });
+    }
+  },
 };
 
 export default accountController;

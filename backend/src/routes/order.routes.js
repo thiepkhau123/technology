@@ -96,7 +96,7 @@ router.get('/', authenticate, async (req, res) => {
  */
 router.post('/', authenticate, async (req, res) => {
   try {
-    const { product_id, category, total_price, payment_method, note, quantity } = req.body;
+    const { product_id, product_name, category, total_price, payment_method, note, quantity } = req.body;
     const userId = req.user.id;
 
     const { data, error } = await supabase
@@ -105,6 +105,7 @@ router.post('/', authenticate, async (req, res) => {
         {
           user_id: userId,
           product_id,
+          product_name,
           category,
           total_price,
           payment_method,

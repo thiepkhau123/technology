@@ -10,6 +10,9 @@ router.get('/', requireAdmin, componentController.getAllComponents);
 // Thêm linh kiện mới
 router.post('/', requireAdmin, componentController.createComponent);
 
+// Sửa linh kiện
+router.put('/:id', requireAdmin, componentController.updateComponent);
+
 // Xóa linh kiện
 router.delete('/:id', requireAdmin, componentController.deleteComponent);
 

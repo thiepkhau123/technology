@@ -23,9 +23,7 @@
 
     <div class="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <h1 class="font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs">Admin</span></h1>
-        <button onclick="toggleSidebar()" class="p-2 hover:bg-slate-800 rounded-lg">
-            <i class="fas fa-bars"></i>
-        </button>
+        <button onclick="toggleSidebar()" class="p-2 hover:bg-slate-800 rounded-lg"><i class="fas fa-bars"></i></button>
     </div>
 
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
@@ -36,7 +34,6 @@
             <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
                     class="text-blue-500 text-xs font-normal">Admin</span></h1>
         </div>
-
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto no-scrollbar">
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-2 tracking-widest">Main Menu</p>
             <a href="admin.html"
@@ -46,7 +43,6 @@
             <a href="admin_orders.html"
                 class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
                 <i class="fas fa-shopping-basket w-5"></i><span class="font-medium">Quản lý đơn hàng</span>
-                <span id="order-badge" class="ml-auto bg-red-500 text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
             </a>
             <a href="accounts.html"
                 class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition">
@@ -65,7 +61,6 @@
                 <i class="fas fa-home w-5"></i> <span class="font-medium">Về trang chủ</span>
             </a>
         </nav>
-
         <div class="p-4 border-t border-slate-800">
             <button onclick="logout()"
                 class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition font-bold text-sm">
@@ -78,60 +73,89 @@
         <header
             class="h-16 bg-white border-b border-slate-200 hidden md:flex items-center justify-between px-8 sticky top-0 z-40">
             <h2 class="font-bold text-slate-800 text-lg">Quản lý Linh kiện PC</h2>
-            <div id="status" class="hidden px-4 py-1.5 rounded-full text-xs font-bold"></div>
+            <div id="status" class="hidden px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm"></div>
         </header>
 
         <div class="p-4 md:p-8 max-w-6xl mx-auto">
-            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-8">
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Thêm sản phẩm mới</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <input id="compName" placeholder="Tên linh kiện"
-                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm lg:col-span-2">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm mb-6 transition-all">
+                <h3 id="formTitle" class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Thông tin
+                    linh kiện nhập kho</h3>
 
-                    <select id="compCategory"
-                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-600">
-                        <option value="">Phân loại</option>
-                        <option value="CPU">CPU</option>
-                        <option value="VGA">Card đồ họa</option>
-                        <option value="RAM">RAM</option>
-                        <option value="SSD">Ổ cứng</option>
-                        <option value="PSU">Nguồn</option>
-                    </select>
-
-                    <input id="compStock" type="number" placeholder="Số lượng tồn"
-                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
-
-                    <div class="relative lg:col-span-1">
-                        <input id="compPrice" type="number" placeholder="Giá bán"
-                            class="w-full bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
-                        <span class="absolute right-4 top-3.5 text-slate-400 font-bold text-sm">đ</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4">
+                    <div class="lg:col-span-4">
+                        <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Tên linh kiện</label>
+                        <input id="compName" placeholder="VD: Intel Core i9-14900K"
+                            class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm transition-all">
                     </div>
 
-                    <input id="compImage" placeholder="Link ảnh sản phẩm"
-                        class="bg-slate-50 border-none rounded-2xl p-3.5 focus:ring-2 focus:ring-blue-500 outline-none text-sm lg:col-span-2">
+                    <div class="lg:col-span-3">
+                        <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Phân loại</label>
+                        <select id="compCategory"
+                            class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm text-slate-600 transition-all">
+                            <option value="">Chọn loại</option>
+                            <option value="CPU">Bộ vi xử lý (CPU)</option>
+                            <option value="VGA">Card màn hình (VGA)</option>
+                            <option value="RAM">Bộ nhớ (RAM)</option>
+                            <option value="SSD">Ổ cứng (SSD/HDD)</option>
+                            <option value="PSU">Nguồn (PSU)</option>
+                            <option value="MAIN">Bo mạch chủ</option>
+                        </select>
+                    </div>
 
-                    <button onclick="addComponent()" id="btnAdd"
-                        class="lg:col-span-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg active:scale-95 py-3">
-                        <i class="fas fa-plus mr-2"></i>Thêm sản phẩm
-                    </button>
+                    <div class="lg:col-span-2">
+                        <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Số lượng</label>
+                        <input id="compStock" type="number" placeholder="0"
+                            class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm transition-all">
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">Giá bán (VNĐ)</label>
+                        <div class="relative mt-1">
+                            <input id="compPrice" type="number" placeholder="0"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm font-bold text-blue-600 transition-all">
+                            <span class="absolute right-3 top-2.5 text-slate-400 font-bold text-xs">đ</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-8">
+                        <label class="text-[10px] font-bold text-slate-500 ml-1">LINK ẢNH MINH HỌA</label>
+                        <input id="compImage" oninput="updateImagePreview()" placeholder="https://..."
+                            class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none text-sm transition-all">
+                    </div>
+
+                    <div class="lg:col-span-4 flex items-end gap-2">
+                        
+                        <button onclick="saveComponent()" id="btnSave"
+                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-md active:scale-95 h-10">
+                            <i class="fas fa-plus mr-2"></i>Thêm linh kiện
+                        </button>
+                        <button id="btnCancel" onclick="resetForm()"
+                            class="hidden px-4 bg-slate-200 hover:bg-slate-300 text-slate-600 text-sm font-bold rounded-xl transition-all h-10">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <div class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden">
                 <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/30">
-                    <h3 class="font-bold text-slate-800">Tồn kho linh kiện</h3>
-                    <div id="loading" class="hidden text-blue-600 text-xs font-bold"><i
-                            class="fas fa-spinner fa-spin mr-1"></i> Đang tải...</div>
+                    <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fas fa-microchip text-blue-500"></i> Tồn kho linh kiện
+                    </h3>
+                    <div id="loading" class="hidden text-blue-600 text-xs font-bold animate-pulse">
+                        <i class="fas fa-spinner fa-spin mr-1"></i> Đang tải dữ liệu...
+                    </div>
                 </div>
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-left whitespace-nowrap">
                         <thead
                             class="bg-slate-50/80 text-slate-500 text-[11px] font-bold uppercase tracking-widest border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-4">Tên sản phẩm</th>
-                                <th class="px-6 py-4">Loại</th>
-                                <th class="px-6 py-4 text-center">Số lượng</th>
-                                <th class="px-6 py-4">Trạng thái</th>
+                                <th class="px-6 py-4">Sản phẩm</th>
+                                <th class="px-6 py-4">Phân loại</th>
+                                <th class="px-6 py-4 text-center">Tồn kho & Giá</th>
+                                <th class="px-6 py-4 text-center">Trạng thái</th>
                                 <th class="px-6 py-4 text-right">Thao tác</th>
                             </tr>
                         </thead>
@@ -139,6 +163,9 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div id="pagination"
+                    class="p-6 border-t border-slate-100 bg-slate-50/30 flex justify-center items-center gap-2"></div>
             </div>
         </div>
     </main>
@@ -147,6 +174,11 @@
     <script>
         const API_URL = 'http://localhost:4000/api/components';
         const token = localStorage.getItem('access_token');
+
+        let allComponents = [];
+        let currentPage = 1;
+        const itemsPerPage = 5;
+        let editingId = null; // Biến quan trọng để theo dõi trạng thái Sửa
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
@@ -161,47 +193,13 @@
             setTimeout(() => status.classList.add('hidden'), 3000);
         }
 
-        // 1. Cập nhật hiển thị danh sách
         async function loadComponents() {
             const loading = document.getElementById('loading');
             loading.classList.remove('hidden');
-
             try {
-                const res = await fetch(API_URL, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await res.json();
-
-                const listBody = document.getElementById('component-list');
-                listBody.innerHTML = data.map(c => `
-            <tr class="hover:bg-slate-50/80 transition animate-in fade-in duration-300">
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <img src="${c.image_url || 'https://via.placeholder.com/40?text=PC'}" class="w-10 h-10 object-cover rounded-lg border border-slate-100">
-                        <span class="font-bold text-slate-700">${c.name}</span>
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="bg-purple-50 text-purple-600 px-2 py-1 rounded-md text-[10px] font-bold uppercase">
-                        ${c.category}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-center">
-                    <div class="font-medium text-slate-600">${c.stock}</div>
-                    <div class="text-[10px] font-bold text-blue-600">${Number(c.price).toLocaleString()}đ</div>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="${c.stock > 0 ? 'text-green-500 bg-green-50' : 'text-red-500 bg-red-50'} font-bold text-[10px] px-2 py-1 rounded-lg">
-                        ${c.stock > 0 ? 'CÒN HÀNG' : 'HẾT HÀNG'}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                    <button onclick="deleteComponent('${c.id}')" class="text-slate-300 hover:text-red-500 p-2 transition">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+                const res = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
+                allComponents = await res.json();
+                renderTable();
             } catch (err) {
                 showNotify("Không thể tải dữ liệu", true);
             } finally {
@@ -209,81 +207,151 @@
             }
         }
 
-        // 2. Cập nhật gửi dữ liệu thêm mới
-        async function addComponent() {
+        function renderTable() {
+            const listBody = document.getElementById('component-list');
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedData = allComponents.slice(startIndex, startIndex + itemsPerPage);
+
+            listBody.innerHTML = paginatedData.map(c => `
+                <tr class="hover:bg-slate-50/80 transition group">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg border border-slate-100 overflow-hidden bg-slate-50 flex-shrink-0">
+                                <img src="${c.image_url || '../assets/noimage.png'}" class="w-full h-full object-cover">
+                            </div>
+                            <span class="font-bold text-slate-700 truncate max-w-[200px]">${c.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="bg-purple-50 text-purple-600 px-2 py-1 rounded-md text-[10px] font-bold uppercase">${c.category}</span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="font-medium text-slate-600">${c.stock} cái</div>
+                        <div class="text-[10px] font-bold text-blue-600">${Number(c.price).toLocaleString()}đ</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="${c.stock > 0 ? 'text-green-500 bg-green-50' : 'text-red-500 bg-red-50'} font-bold text-[9px] px-2 py-1 rounded-lg uppercase">
+                            ${c.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex justify-end gap-2">
+                            <button onclick="prepareEdit('${c.id}')" class="text-slate-400 hover:text-blue-500 p-2 transition">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteComponent('${c.id}')" class="text-slate-300 hover:text-red-500 p-2 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            renderPagination();
+        }
+
+        // Chế độ Chỉnh sửa: Đổ dữ liệu lên form
+        function prepareEdit(id) {
+            const item = allComponents.find(c => c.id === id);
+            if (!item) return;
+
+            editingId = id;
+            document.getElementById('compName').value = item.name;
+            document.getElementById('compCategory').value = item.category;
+            document.getElementById('compStock').value = item.stock;
+            document.getElementById('compPrice').value = item.price;
+            document.getElementById('compImage').value = item.image_url || '';
+
+            // Cập nhật UI Form
+            document.getElementById('formTitle').textContent = "Đang chỉnh sửa sản phẩm";
+            document.getElementById('btnCancel').classList.remove('hidden');
+            const btnSave = document.getElementById('btnSave');
+            btnSave.innerHTML = '<i class="fas fa-save mr-2"></i>Cập nhật';
+            btnSave.classList.replace('bg-blue-600', 'bg-amber-500');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Hủy bỏ chế độ sửa
+        function resetForm() {
+            editingId = null;
+            document.getElementById('formTitle').textContent = "Thêm sản phẩm mới";
+            document.getElementById('btnCancel').classList.add('hidden');
+            const btnSave = document.getElementById('btnSave');
+            btnSave.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
+            btnSave.classList.replace('bg-amber-500', 'bg-blue-600');
+
+            document.querySelectorAll('input').forEach(i => i.value = '');
+            document.getElementById('compCategory').value = '';
+        }
+
+        async function saveComponent() {
             const name = document.getElementById('compName').value;
             const category = document.getElementById('compCategory').value;
             const stock = document.getElementById('compStock').value;
             const price = document.getElementById('compPrice').value;
             const image_url = document.getElementById('compImage').value;
-            const btn = document.getElementById('btnAdd');
+            const btn = document.getElementById('btnSave');
 
-            if (!name || !category || !stock || !price) {
-                return showNotify("Vui lòng nhập Tên, Loại, Số lượng và Giá", true);
-            }
+            if (!name || !category || !stock || !price) return showNotify("Vui lòng nhập đủ thông tin", true);
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang lưu...';
+
+            // Quyết định dùng POST (thêm) hay PUT (sửa)
+            const method = editingId ? 'PUT' : 'POST';
+            const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
             try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        name,
-                        category,
-                        stock: parseInt(stock),
-                        price: parseFloat(price),
-                        image_url
-                    })
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ name, category, stock: parseInt(stock), price: parseFloat(price), image_url })
                 });
 
                 if (res.ok) {
-                    showNotify("Thêm linh kiện thành công!");
-                    // Reset form
-                    document.getElementById('compName').value = '';
-                    document.getElementById('compStock').value = '';
-                    document.getElementById('compPrice').value = '';
-                    document.getElementById('compImage').value = '';
+                    showNotify(editingId ? "Cập nhật thành công!" : "Thêm linh kiện thành công!");
+                    resetForm();
                     loadComponents();
                 } else {
                     const errData = await res.json();
-                    throw new Error(errData.message);
+                    showNotify(errData.message || "Lỗi thao tác", true);
                 }
             } catch (err) {
-                showNotify(err.message || "Lỗi khi thêm sản phẩm", true);
+                showNotify("Lỗi hệ thống kết nối", true);
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
+                if (!editingId) btn.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
             }
         }
 
-        // 3. Xóa linh kiện
         async function deleteComponent(id) {
             if (!confirm("Bạn có chắc chắn muốn xóa linh kiện này?")) return;
-
             try {
                 const res = await fetch(`${API_URL}/${id}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-
-                if (res.ok) {
-                    showNotify("Đã xóa linh kiện");
-                    loadComponents();
-                }
-            } catch (err) {
-                showNotify("Lỗi khi xóa", true);
-            }
+                if (res.ok) { showNotify("Đã xóa thành công"); loadComponents(); }
+            } catch (err) { showNotify("Lỗi khi xóa", true); }
         }
 
-        // Khởi tạo
-        checkAdmin().then(() => {
-            loadComponents();
-        });
+        // --- Phân trang ---
+        function renderPagination() {
+            const totalPages = Math.ceil(allComponents.length / itemsPerPage);
+            const container = document.getElementById('pagination');
+            if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+            let html = `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="px-3 py-1 rounded-lg border border-slate-200 text-xs font-bold hover:bg-slate-100 disabled:opacity-50"><i class="fas fa-chevron-left"></i></button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button onclick="goToPage(${i})" class="w-8 h-8 rounded-lg text-xs font-bold transition-all ${currentPage === i ? 'bg-blue-600 text-white shadow-md' : 'hover:bg-slate-100 text-slate-600'}">${i}</button>`;
+            }
+            html += `<button onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="px-3 py-1 rounded-lg border border-slate-200 text-xs font-bold hover:bg-slate-100 disabled:opacity-50"><i class="fas fa-chevron-right"></i></button>`;
+            container.innerHTML = html;
+        }
+
+        function goToPage(page) { currentPage = page; renderTable(); }
+
+        checkAdmin().then(() => loadComponents());
     </script>
 </body>
 

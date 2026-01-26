@@ -244,6 +244,7 @@
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                         body: JSON.stringify({
                             product_id: item.id,
+                            product_name: item.name,
                             category: item.category,
                             total_price: item.price * (item.quantity || 1),
                             payment_method: 'online_banking',

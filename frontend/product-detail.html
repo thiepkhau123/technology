@@ -174,6 +174,7 @@
     async function confirmPaid() {
       const { cat } = getURLParams();
       const isPhysical = ['phone', 'component'].includes((cat || "").toLowerCase());
+      const productName = currentProduct.name || `${currentProduct.provider || ''} ${currentProduct.plan || ''}`;
       let note = `Nội dung CK: ${document.getElementById('pay-content').innerText}`;
 
       if (isPhysical) {
@@ -194,6 +195,7 @@
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('access_token')}` },
           body: JSON.stringify({
             product_id: currentProduct.id,
+            product_name: productName,
             category: cat,
             total_price: currentProduct.price,
             payment_method: 'online_banking',
@@ -206,8 +208,60 @@
     }
 
     function closePaymentModal() { document.getElementById('payment-modal').classList.replace('flex', 'hidden'); }
-    function updateCartBadge() { /* ...giữ nguyên logic cũ... */ }
-    function addToCart() { /* ...giữ nguyên logic cũ... */ }
+    function updateCartBadge() {
+    // 1. Lấy dữ liệu từ localStorage
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // 2. Tính tổng số lượng (nếu mỗi item có quantity, hoặc chỉ đếm số dòng)
+    // Ở đây tôi tính tổng số lượng sản phẩm (ví dụ: mua 2 cái A, 1 cái B => badge hiện số 3)
+    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    
+    // 3. Tìm tất cả các phần tử có ID hoặc Class là cart-count
+    const badges = document.querySelectorAll('#cart-count, .cart-count');
+    
+    badges.forEach(badge => {
+        badge.innerText = totalItems;
+        
+        // 4. Ẩn badge nếu giỏ hàng trống, hiện nếu có hàng
+        if (totalItems > 0) {
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    });
+}
+    function addToCart() {
+    if (!currentProduct) return alert("Dữ liệu sản phẩm chưa tải xong!");
+
+    // Lấy giỏ hàng hiện tại hoặc tạo mới
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Kiểm tra xem sản phẩm đã có trong giỏ chưa
+    const existingItem = cart.find(item => item.id === currentProduct.id);
+
+    if (existingItem) {
+        existingItem.quantity = (existingItem.quantity || 1) + 1;
+    } else {
+        // Chuẩn hóa dữ liệu để giống với cấu trúc trang cart.html cần
+        const name = currentProduct.name || `${currentProduct.provider || ''} ${currentProduct.plan || ''}`;
+        const img = (currentProduct.image_url && currentProduct.image_url !== 'NULL') 
+                    ? currentProduct.image_url 
+                    : 'https://via.placeholder.com/100';
+
+        cart.push({
+            id: currentProduct.id,
+            name: name,
+            price: currentProduct.price,
+            category: getURLParams().cat, // Lấy từ URL
+            image: img,
+            quantity: 1
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge(); // Cập nhật số lượng trên header
+    alert("✅ Đã thêm sản phẩm vào giỏ hàng!");
+}
 
     async function initPage() {
       const { id, cat } = getURLParams();
