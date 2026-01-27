@@ -1,19 +1,22 @@
-// src/routes/me.js
-import express from 'express'
-import { authenticate } from '../middleware/auth.js' // Giả sử file này export 'authenticate'
+import express from 'express';
+import { authenticate } from '../middleware/auth.js';
 import { getDashboardStats } from '../controllers/stats.controller.js';
+import userController from '../controllers/userController.js'; // Import controller xử lý user
 
-const router = express.Router()
+const router = express.Router();
 
-// GET /api/me - Lấy thông tin user hiện tại
-router.get('/', authenticate, (req, res) => {
-  res.json({
-    email: req.user.email,
-    role: (req.user.email === 'ngocthiep213@gmail.com') ? 'admin' : 'user'
-  });
-});
+/**
+ * @route   GET /api/me
+ * @desc    Lấy thông tin chi tiết của người dùng hiện tại từ bảng profiles
+ * @access  Private
+ */
+router.get('/', authenticate, userController.getMe);
 
-// GET /api/me/stats - Lấy thống kê (Sửa requireAdmin thành authenticate)
+/**
+ * @route   GET /api/me/stats
+ * @desc    Lấy thông số thống kê dashboard
+ * @access  Private
+ */
 router.get('/stats', authenticate, getDashboardStats);
 
-export default router
+export default router;

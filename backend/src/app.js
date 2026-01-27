@@ -10,6 +10,7 @@ import componentRoutes from './routes/components.js' // Sửa tên biến cho đ
 import productRoutes from './routes/product.routes.js'
 import orderRoutes from './routes/order.routes.js'
 import adminRoutes from './routes/admin.routes.js';
+import userRoutes from './routes/userRoutes.js';
 
 const app = express()
 
@@ -26,6 +27,7 @@ app.use('/api/components', componentRoutes)
 app.use('/api/products', productRoutes)  // Đường dẫn đúng cho sản phẩm tổng hợp
 app.use('/api/orders', orderRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', userRoutes);
 
 // Middleware xử lý lỗi 404 cho các route không tồn tại (tránh trả về HTML mặc định)
 app.use((req, res) => {

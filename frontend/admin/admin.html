@@ -129,7 +129,7 @@
                 class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center font-black text-2xl border border-white/30 shadow-inner"
                 id="admin-initial">A</div>
               <div>
-                <p id="currentAdminEmail" class="font-bold text-lg truncate w-48">Admin Account</p>
+                <p id="currentAdminName" class="font-bold text-lg truncate w-48">Admin Account</p>
                 <span class="text-xs text-blue-200 font-bold uppercase tracking-widest opacity-80">Root Access</span>
               </div>
             </div>
@@ -184,10 +184,13 @@
           startCountdown();
           return;
         }
+        const adminNameDisplay = (userData.full_name && userData.full_name.trim() !== "" && userData.full_name.toUpperCase() !== "NULL")
+          ? userData.full_name
+          : userData.email.split('@')[0];
 
         // 4. Nếu hợp lệ, hiển thị UI Admin
-        document.getElementById('currentAdminEmail').textContent = userData.email;
-        document.getElementById('admin-initial').textContent = userData.email[0].toUpperCase();
+        document.getElementById('currentAdminName').textContent = adminNameDisplay;
+        document.getElementById('admin-initial').textContent = adminNameDisplay[0].toUpperCase();
 
         loadDashboardStats(token);
 

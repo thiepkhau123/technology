@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '../supabase.js'
 
-// Middleware 1: Xác thực người dùng (Chỉ cần đăng nhập)
+// src/middleware/auth.js
 export async function authenticate(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) return res.status(401).json({ message: 'No token' })
@@ -8,7 +8,11 @@ export async function authenticate(req, res, next) {
   const { data, error } = await supabaseAdmin.auth.getUser(token)
   if (error) return res.status(401).json(error)
 
-  req.user = data.user
+  // Lấy full_name từ user_metadata nếu có
+  const user = data.user;
+  user.full_name = user.user_metadata?.full_name || user.user_metadata?.full_name || null;
+
+  req.user = user
   next()
 }
 
