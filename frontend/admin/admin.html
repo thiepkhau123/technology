@@ -9,56 +9,79 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .stat-card { transition: transform 0.2s ease, shadow 0.2s ease; }
-    .stat-card:hover { transform: translateY(-5px); }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .stat-card {
+      transition: transform 0.2s ease, shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
   </style>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col md:flex-row">
 
-    <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
-        <div class="p-6 border-b border-slate-800/50 text-center md:text-left">
-            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs font-normal">Admin</span></h1>
-        </div>
-        <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto no-scrollbar">
-            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Hệ thống</p>
-            <a href="admin.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40 group">
-                <i class="fas fa-chart-pie w-5"></i><span class="font-medium">Dashboard</span>
-            </a>
-            <a href="admin_orders.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-shopping-basket w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Quản lý đơn hàng</span>
-                <span id="order-badge" class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
-            </a>
-            <div class="h-4"></div>
-            <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Sản phẩm</p>
-            <a href="accounts.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Account AI</span>
-            </a>
-            <a href="phone_lock.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Điện thoại lock</span>
-            </a>
-            <a href="components.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-microchip w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Linh Kiện</span>
-            </a>
-            <div class="pt-10">
-                <a href="../index.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
-                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang chủ</span>
-                </a>
-            </div>
-        </nav>
-        <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
-                <i class="fas fa-power-off"></i> Đăng xuất
-            </button>
-        </div>
-    </aside>
+  <aside id="sidebar"
+    class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
+    <div class="p-6 border-b border-slate-800/50 text-center md:text-left">
+      <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+          class="text-blue-500 text-xs font-normal">Admin</span></h1>
+    </div>
+    <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto no-scrollbar">
+      <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Hệ thống</p>
+      <a href="admin.html"
+        class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40 group">
+        <i class="fas fa-chart-pie w-5"></i><span class="font-medium">Dashboard</span>
+      </a>
+      <a href="admin_orders.html"
+        class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+        <i class="fas fa-shopping-basket w-5 text-slate-500 group-hover:text-blue-400"></i><span
+          class="font-medium">Quản lý đơn hàng</span>
+        <span id="order-badge"
+          class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
+      </a>
+      <div class="h-4"></div>
+      <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Sản phẩm</p>
+      <a href="accounts.html"
+        class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+        <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span
+          class="font-medium text-sm">Account AI</span>
+      </a>
+      <a href="phone_lock.html"
+        class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+        <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span
+          class="font-medium text-sm">Điện thoại lock</span>
+      </a>
+      <a href="components.html"
+        class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+        <i class="fas fa-microchip w-5 text-slate-500 group-hover:text-blue-400"></i><span
+          class="font-medium text-sm">Linh Kiện</span>
+      </a>
+      <div class="pt-10">
+        <a href="../index.html"
+          class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
+          <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang chủ</span>
+        </a>
+      </div>
+    </nav>
+    <div class="p-4 border-t border-slate-800">
+      <button onclick="logout()"
+        class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
+        <i class="fas fa-power-off"></i> Đăng xuất
+      </button>
+    </div>
+  </aside>
 
   <main class="flex-1 p-6 md:p-10">
     <div id="content" class="max-w-6xl mx-auto space-y-10">
-      
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+        <div
+          class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div class="relative z-10">
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Tài khoản AI</p>
             <h3 id="stat-accounts" class="text-3xl font-black text-slate-900">0</h3>
@@ -66,10 +89,12 @@
               <i class="fas fa-caret-up"></i> Tăng trưởng ổn định
             </div>
           </div>
-          <i class="fas fa-robot absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-blue-50 transition-colors"></i>
+          <i
+            class="fas fa-robot absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-blue-50 transition-colors"></i>
         </div>
 
-        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+        <div
+          class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div class="relative z-10">
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Thiết bị Lock</p>
             <h3 id="stat-phones" class="text-3xl font-black text-slate-900">0</h3>
@@ -77,10 +102,12 @@
               <i class="fas fa-check-circle"></i> Hệ thống ổn định
             </div>
           </div>
-          <i class="fas fa-mobile-alt absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-indigo-50 transition-colors"></i>
+          <i
+            class="fas fa-mobile-alt absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-indigo-50 transition-colors"></i>
         </div>
 
-        <div class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
+        <div
+          class="stat-card bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm relative overflow-hidden group">
           <div class="relative z-10">
             <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.15em] mb-1">Linh kiện</p>
             <h3 id="stat-components" class="text-3xl font-black text-slate-900">0</h3>
@@ -88,21 +115,25 @@
               <i class="fas fa-box"></i> Kho hàng sẵn sàng
             </div>
           </div>
-          <i class="fas fa-microchip absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-purple-50 transition-colors"></i>
+          <i
+            class="fas fa-microchip absolute -right-2 -bottom-2 text-slate-50 text-6xl group-hover:text-purple-50 transition-colors"></i>
         </div>
       </div>
 
       <div class="max-w-md center mx-auto">
-        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
+        <div
+          class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
           <div class="relative z-10">
             <div class="flex items-center gap-5 mb-8">
-              <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center font-black text-2xl border border-white/30 shadow-inner" id="admin-initial">A</div>
+              <div
+                class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center font-black text-2xl border border-white/30 shadow-inner"
+                id="admin-initial">A</div>
               <div>
                 <p id="currentAdminEmail" class="font-bold text-lg truncate w-48">Admin Account</p>
                 <span class="text-xs text-blue-200 font-bold uppercase tracking-widest opacity-80">Root Access</span>
               </div>
             </div>
-            
+
             <div class="grid grid-cols-2 gap-4">
               <div class="bg-white/10 p-4 rounded-2xl border border-white/10">
                 <p class="text-[10px] text-blue-200 uppercase font-black mb-1 opacity-70">Trạng thái</p>
@@ -126,39 +157,118 @@
   <script src="js/auth.js"></script>
   <script>
     const API_BASE = 'http://localhost:4000/api';
+    let countdownTimer;
 
-    async function loadDashboardData() {
-      const token = localStorage.getItem('access_token');
-      if (!token) return;
+    async function checkAdminAccess() {
+      const token = localStorage.getItem('access_token') || localStorage.getItem('token');
+
+      // 1. Kiểm tra nếu chưa đăng nhập
+      if (!token) {
+        window.location.href = '../login.html';
+        return;
+      }
 
       try {
-        const [resMe, resStats] = await Promise.all([
-          fetch(`${API_BASE}/me`, { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch(`${API_BASE}/me/stats`, { headers: { 'Authorization': `Bearer ${token}` } })
-        ]);
+        // 2. Lấy thông tin tài khoản
+        const resMe = await fetch(`${API_BASE}/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-        const adminData = await resMe.json();
-        const stats = await resStats.json();
+        if (!resMe.ok) throw new Error("Phiên đăng nhập hết hạn");
 
-        // Cập nhật thông tin Admin
-        if (adminData.email) {
-          document.getElementById('currentAdminEmail').textContent = adminData.email;
-          document.getElementById('admin-initial').textContent = adminData.email[0].toUpperCase();
+        const userData = await resMe.json();
+
+        // 3. Kiểm tra Role - Chặn nếu không phải admin/root
+        if (userData.role !== 'admin' && userData.role !== 'root') {
+          renderAccessDenied(userData.email);
+          startCountdown();
+          return;
         }
 
-        // Cập nhật 4 thẻ thống kê
-        document.getElementById('stat-accounts').innerText = (stats.totalAccounts || 0).toLocaleString();
-        document.getElementById('stat-phones').innerText = (stats.totalPhones || 0).toLocaleString();
-        document.getElementById('stat-components').innerText = (stats.totalComponents || 0).toLocaleString();
-        document.getElementById('stat-low-stock').innerText = (stats.lowStockCount || 0).toLocaleString();
+        // 4. Nếu hợp lệ, hiển thị UI Admin
+        document.getElementById('currentAdminEmail').textContent = userData.email;
+        document.getElementById('admin-initial').textContent = userData.email[0].toUpperCase();
+
+        loadDashboardStats(token);
 
       } catch (error) {
-        console.error("Lỗi khi tải dữ liệu:", error);
+        console.error("Lỗi xác thực:", error);
+        localStorage.clear();
+        window.location.href = '../login.html';
       }
     }
 
-    // Khởi chạy
-    loadDashboardData();
+    // Giao diện thông báo lỗi chuyên nghiệp
+    function renderAccessDenied(email) {
+      // Đảm bảo body chiếm toàn bộ không gian và không bị cuộn
+      document.body.className = "m-0 p-0 overflow-hidden";
+
+      document.body.innerHTML = `
+        <div class="fixed inset-0 min-h-screen w-full bg-slate-50 flex items-center justify-center p-6 z-[9999]">
+            <div class="max-w-md w-full bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 animate-slide text-center font-['Inter']">
+                <div class="w-20 h-20 bg-red-100 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 relative">
+                    <i class="fas fa-user-shield text-3xl"></i>
+                    <span class="absolute -top-1 -right-1 flex h-5 w-5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
+                    </span>
+                </div>
+
+                <h1 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Truy cập bị chặn</h1>
+                <p class="text-slate-500 text-sm mb-4">Tài khoản <span class="font-bold text-slate-800">${email}</span> không có quyền Admin.</p>
+                
+                <div class="bg-slate-50 rounded-2xl p-4 mb-8 border border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tự động quay lại sau</p>
+                    <div class="flex items-center justify-center gap-1">
+                        <span id="countdown-text" class="text-2xl font-black text-blue-600">5</span>
+                        <span class="text-sm font-bold text-slate-400">giây</span>
+                    </div>
+                </div>
+
+                <a href="../index.html" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all shadow-lg shadow-slate-200 w-full justify-center">
+                    <i class="fas fa-home"></i> Về trang chủ ngay
+                </a>
+            </div>
+        </div>
+    `;
+    }
+
+    // Hàm đếm ngược chuyển hướng
+    function startCountdown() {
+      let seconds = 5;
+      const textEl = document.getElementById('countdown-text');
+
+      countdownTimer = setInterval(() => {
+        seconds--;
+        if (textEl) textEl.innerText = seconds;
+        if (seconds <= 0) {
+          clearInterval(countdownTimer);
+          window.location.href = '../index.html';
+        }
+      }, 1000);
+    }
+
+    async function loadDashboardStats(token) {
+      try {
+        const resStats = await fetch(`${API_BASE}/me/stats`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const stats = await resStats.json();
+
+        document.getElementById('stat-accounts').innerText = (stats.totalAccounts || 0).toLocaleString();
+        document.getElementById('stat-phones').innerText = (stats.totalPhones || 0).toLocaleString();
+        document.getElementById('stat-components').innerText = (stats.totalComponents || 0).toLocaleString();
+
+        const lowStockEl = document.getElementById('stat-low-stock');
+        if (lowStockEl) lowStockEl.innerText = (stats.lowStockCount || 0).toLocaleString();
+
+      } catch (error) {
+        console.error("Lỗi tải stats:", error);
+      }
+    }
+
+    window.onload = checkAdminAccess;
   </script>
 </body>
-</html> 
+
+</html>

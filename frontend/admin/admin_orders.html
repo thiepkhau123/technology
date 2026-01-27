@@ -9,78 +9,120 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .glass-effect { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .animate-slide { animation: slideIn 0.3s ease-out forwards; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.3s ease-out forwards;
+        }
     </style>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col md:flex-row text-slate-900">
 
-    <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
+    <aside id="sidebar"
+        class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
         <div class="p-6 border-b border-slate-800/50 text-center md:text-left">
-            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs font-normal">Admin</span></h1>
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto no-scrollbar">
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Hệ thống</p>
-            <a href="admin.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Dashboard</span>
+            <a href="admin.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium">Dashboard</span>
             </a>
-            <a href="admin_orders.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40">
+            <a href="admin_orders.html"
+                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40">
                 <i class="fas fa-shopping-basket w-5 "></i><span class="font-medium">Quản lý đơn hàng</span>
-                <span id="order-badge" class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
+                <span id="order-badge"
+                    class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
             </a>
             <div class="h-4"></div>
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Sản phẩm</p>
-            <a href="accounts.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Account AI</span>
+            <a href="accounts.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium text-sm">Account AI</span>
             </a>
-            <a href="phone_lock.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Điện thoại lock</span>
+            <a href="phone_lock.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium text-sm">Điện thoại lock</span>
             </a>
-            <a href="components.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-microchip w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Linh Kiện</span>
+            <a href="components.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-microchip w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium text-sm">Linh Kiện</span>
             </a>
             <div class="pt-10">
-                <a href="../index.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
-                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang chủ</span>
+                <a href="../index.html"
+                    class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
+                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang
+                        chủ</span>
                 </a>
             </div>
         </nav>
         <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
                 <i class="fas fa-power-off"></i> Đăng xuất
             </button>
         </div>
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0">
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 sticky top-0 z-40">
+        <header
+            class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 sticky top-0 z-40">
             <div class="flex flex-col">
                 <h2 class="font-black text-slate-800 text-lg md:text-xl uppercase tracking-tight">Đơn hàng</h2>
                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="current-date"></span>
             </div>
-            
+
             <div class="flex items-center gap-3">
                 <div class="hidden md:flex relative">
                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                    <input type="text" id="orderSearch" oninput="renderTable()" placeholder="Tìm mã đơn, tên..." 
+                    <input type="text" id="orderSearch" oninput="renderTable()" placeholder="Tìm mã đơn, tên..."
                         class="bg-slate-100 border-none rounded-full py-2 pl-9 pr-4 text-xs focus:ring-2 focus:ring-blue-500/20 w-64 transition-all">
                 </div>
-                <button onclick="loadAdminOrders()" class="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-90">
+                <button onclick="loadAdminOrders()"
+                    class="w-10 h-10 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-all shadow-sm active:scale-90">
                     <i id="refresh-icon" class="fas fa-sync-alt text-sm"></i>
                 </button>
             </div>
         </header>
 
         <div class="p-4 md:p-8">
-            <div class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col min-h-[500px] animate-slide">
+            <div
+                class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col min-h-[500px] animate-slide">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr class="text-[10px] uppercase text-slate-400 font-black border-b border-slate-100 bg-slate-50/50">
+                            <tr
+                                class="text-[10px] uppercase text-slate-400 font-black border-b border-slate-100 bg-slate-50/50">
                                 <th class="py-5 px-8">Khách hàng & ID</th>
                                 <th class="py-5 px-6">Sản phẩm</th>
                                 <th class="py-5 px-6">Thanh toán</th>
@@ -89,15 +131,18 @@
                             </tr>
                         </thead>
                         <tbody id="admin-orders-list" class="text-sm divide-y divide-slate-50">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
-                <div id="pagination-controls" class="p-6 flex justify-between items-center bg-slate-50/30 border-t border-slate-100 mt-auto"></div>
+                <div id="pagination-controls"
+                    class="p-6 flex justify-between items-center bg-slate-50/30 border-t border-slate-100 mt-auto">
+                </div>
             </div>
         </div>
     </main>
 
-    <div id="approve-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+    <div id="approve-modal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-[2.5rem] p-6 md:p-10 max-w-lg w-full shadow-2xl scale-100 animate-slide">
             <div class="flex justify-between items-start mb-8">
                 <div>
@@ -107,22 +152,27 @@
                     <h3 class="text-2xl font-black text-slate-900 leading-tight">Bàn giao sản phẩm</h3>
                     <p id="modal-desc" class="text-slate-500 text-sm mt-1"></p>
                 </div>
-                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
+                <button onclick="closeModal()"
+                    class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
                     <i class="fas fa-times text-slate-400"></i>
                 </button>
             </div>
 
             <input type="hidden" id="modal-order-id">
             <div class="relative">
-                <textarea id="modal-delivery-data" 
-                    class="w-full p-5 bg-slate-50 border-2 border-slate-100 rounded-[1.5rem] h-48 outline-none focus:border-blue-500 focus:bg-white transition-all font-mono text-sm shadow-inner" 
+                <textarea id="modal-delivery-data"
+                    class="w-full p-5 bg-slate-50 border-2 border-slate-100 rounded-[1.5rem] h-48 outline-none focus:border-blue-500 focus:bg-white transition-all font-mono text-sm shadow-inner"
                     placeholder="Nhập Key, Account hoặc Mã vận đơn vận chuyển..."></textarea>
-                <div class="absolute bottom-4 right-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest pointer-events-none">Dữ liệu bàn giao</div>
+                <div
+                    class="absolute bottom-4 right-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest pointer-events-none">
+                    Dữ liệu bàn giao</div>
             </div>
 
             <div class="grid grid-cols-2 gap-4 mt-8">
-                <button onclick="closeModal()" class="py-4 font-bold text-slate-400 hover:text-slate-600 rounded-2xl transition-all uppercase text-xs tracking-widest">Đóng</button>
-                <button id="btn-submit-approve" onclick="submitApproval()" class="py-4 font-bold bg-blue-600 text-white rounded-[1.2rem] hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95 uppercase text-xs tracking-widest">
+                <button onclick="closeModal()"
+                    class="py-4 font-bold text-slate-400 hover:text-slate-600 rounded-2xl transition-all uppercase text-xs tracking-widest">Đóng</button>
+                <button id="btn-submit-approve" onclick="submitApproval()"
+                    class="py-4 font-bold bg-blue-600 text-white rounded-[1.2rem] hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95 uppercase text-xs tracking-widest">
                     Xác nhận hoàn tất
                 </button>
             </div>
@@ -134,7 +184,7 @@
         const API_BASE = 'http://localhost:4000/api';
         const REFRESH_INTERVAL = 60000; // Đặt 60 giây để tránh spam API quá mức
         const ITEMS_PER_PAGE = 8;
-        
+
         let refreshTimer = null;
         let currentPage = 1;
         let allOrders = [];
@@ -146,7 +196,7 @@
 
         async function loadAdminOrders() {
             const icon = document.getElementById('refresh-icon');
-            if(icon) icon.classList.add('fa-spin'); // Bắt đầu xoay icon khi load
+            if (icon) icon.classList.add('fa-spin'); // Bắt đầu xoay icon khi load
 
             const listContainer = document.getElementById('admin-orders-list');
             const token = localStorage.getItem('access_token') || localStorage.getItem('token');
@@ -157,9 +207,11 @@
                 });
 
                 if (!res.ok) throw new Error("Phiên làm việc hết hạn");
-                
+
                 const orders = await res.json();
-                allOrders = orders.sort((a, b) => b.id.localeCompare(a.id));
+                allOrders = orders.sort((a, b) => {
+                    return new Date(b.created_at) - new Date(a.created_at);
+                });
 
                 const pendingCount = allOrders.filter(o => o.status === 'pending').length;
                 const badge = document.getElementById('order-badge');
@@ -174,16 +226,16 @@
                 listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-red-400 font-medium"><i class="fas fa-exclamation-circle mr-2"></i> ${err.message}</td></tr>`;
             } finally {
                 // Tắt hiệu ứng xoay sau 800ms để người dùng kịp thấy
-                setTimeout(() => { if(icon) icon.classList.remove('fa-spin'); }, 800);
+                setTimeout(() => { if (icon) icon.classList.remove('fa-spin'); }, 800);
             }
         }
 
         function renderTable() {
             const listContainer = document.getElementById('admin-orders-list');
             const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
-            
-            const filteredOrders = allOrders.filter(o => 
-                o.id.toLowerCase().includes(searchTerm) || 
+
+            const filteredOrders = allOrders.filter(o =>
+                o.id.toLowerCase().includes(searchTerm) ||
                 (o.profiles?.email || '').toLowerCase().includes(searchTerm) ||
                 (o.product_name || '').toLowerCase().includes(searchTerm)
             );
@@ -200,18 +252,28 @@
             listContainer.innerHTML = paginatedOrders.map(order => {
                 const isPending = order.status === 'pending';
                 const email = order.profiles?.email || 'Guest';
-                
+
+                const isAdmin = email === 'ngocthiep213@gmail.com';
+                const adminBadge = isAdmin ? '<span class="ml-1 text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-md font-black uppercase">Admin</span>' : '';
+
                 let catStyle = 'bg-slate-100 text-slate-600';
-                if(order.category === 'account') catStyle = 'bg-blue-50 text-blue-600';
-                if(order.category === 'phone') catStyle = 'bg-indigo-50 text-indigo-600';
-                if(order.category === 'component') catStyle = 'bg-amber-50 text-amber-600';
+                if (order.category === 'account') catStyle = 'bg-blue-50 text-blue-600';
+                if (order.category === 'phone') catStyle = 'bg-indigo-50 text-indigo-600';
+                if (order.category === 'component') catStyle = 'bg-amber-50 text-amber-600';
 
                 return `
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="py-5 px-8">
-                        <div class="flex flex-col">
-                            <span class="font-bold text-slate-800 text-sm truncate max-w-[150px]">${email.split('@')[0]}</span>
-                            <span class="text-[10px] font-black text-blue-500 tracking-tighter uppercase">ID: #${order.id.split('-')[0]}</span>
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="font-bold text-slate-800 text-sm truncate max-w-[200px]" title="${email}">
+                                    ${email.split('@')[0]}
+                                </span>
+                                ${adminBadge}
+                            </div>
+                            <span class="text-[10px] font-black text-blue-500 tracking-tighter uppercase">
+                                ID: #${order.id.split('-')[0]}
+                            </span>
                         </div>
                     </td>
                     <td class="py-5 px-6">
@@ -267,8 +329,8 @@
 
         function openApproveModal(id, category) {
             // Tạm dừng tự động load khi đang nhập liệu để không bị reset trang
-            stopAutoRefresh(); 
-            
+            stopAutoRefresh();
+
             document.getElementById('modal-order-id').value = id;
             const desc = {
                 'account': 'Nhập Thông tin tài khoản hoặc Mã Key bản quyền.',
@@ -336,4 +398,5 @@
         };
     </script>
 </body>
+
 </html>
