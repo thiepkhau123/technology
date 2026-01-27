@@ -182,37 +182,119 @@
     <script src="js/auth.js"></script>
     <script>
         const API_BASE = 'http://localhost:4000/api';
-        const REFRESH_INTERVAL = 60000; // Đặt 60 giây để tránh spam API quá mức
+        const REFRESH_INTERVAL = 60000;
         const ITEMS_PER_PAGE = 8;
+        const token = localStorage.getItem('access_token') || localStorage.getItem('token');
 
         let refreshTimer = null;
+        let countdownTimer = null;
         let currentPage = 1;
         let allOrders = [];
 
         // Hiển thị ngày tháng
         const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
         const now = new Date();
-        document.getElementById('current-date').innerText = `${days[now.getDay()]}, ${now.getDate()} tháng ${(now.getMonth() + 1)} năm ${now.getFullYear()}`;
+        const dateEl = document.getElementById('current-date');
+        if (dateEl) dateEl.innerText = `${days[now.getDay()]}, ${now.getDate()} tháng ${(now.getMonth() + 1)} năm ${now.getFullYear()}`;
+
+        // --- 1. KIỂM TRA QUYỀN TRUY CẬP (ĐỒNG BỘ) ---
+        async function checkAdminAccess() {
+            if (!token) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            try {
+                const resMe = await fetch(`${API_BASE}/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!resMe.ok) throw new Error("Phiên làm việc hết hạn");
+
+                const userData = await resMe.json();
+
+                // Chặn nếu không phải admin/root
+                if (userData.role !== 'admin' && userData.role !== 'root') {
+                    renderAccessDenied(userData.email);
+                    startCountdown();
+                    return;
+                }
+
+                // Nếu hợp lệ -> Khởi tạo dữ liệu đơn hàng
+                initOrderPage();
+
+            } catch (error) {
+                console.error("Lỗi xác thực:", error);
+                localStorage.clear();
+                window.location.href = '../login.html';
+            }
+        }
+
+        function renderAccessDenied(email) {
+            document.body.className = "m-0 p-0 overflow-hidden";
+            document.body.innerHTML = `
+            <div class="fixed inset-0 min-h-screen w-full bg-slate-50 flex items-center justify-center p-6 z-[9999]">
+                <div class="max-w-md w-full bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 text-center font-['Inter']">
+                    <div class="w-20 h-20 bg-red-100 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 relative">
+                        <i class="fas fa-user-shield text-3xl"></i>
+                        <span class="absolute -top-1 -right-1 flex h-5 w-5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
+                        </span>
+                    </div>
+                    <h1 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Truy cập bị chặn</h1>
+                    <p class="text-slate-500 text-sm mb-4">Tài khoản <span class="font-bold text-slate-800">${email}</span> không có quyền Admin.</p>
+                    <div class="bg-slate-50 rounded-2xl p-4 mb-8 border border-slate-100">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tự động quay lại sau</p>
+                        <div class="flex items-center justify-center gap-1">
+                            <span id="countdown-text" class="text-2xl font-black text-blue-600">5</span>
+                            <span class="text-sm font-bold text-slate-400">giây</span>
+                        </div>
+                    </div>
+                    <a href="../index.html" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all w-full justify-center">
+                        <i class="fas fa-home"></i> Về trang chủ ngay
+                    </a>
+                </div>
+            </div>
+        `;
+        }
+
+        function startCountdown() {
+            let seconds = 5;
+            const textEl = document.getElementById('countdown-text');
+            countdownTimer = setInterval(() => {
+                seconds--;
+                if (textEl) textEl.innerText = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = '../index.html';
+                }
+            }, 1000);
+        }
+
+        // --- 2. QUẢN LÝ ĐƠN HÀNG ---
+        function initOrderPage() {
+            loadAdminOrders();
+            startAutoRefresh();
+        }
 
         async function loadAdminOrders() {
             const icon = document.getElementById('refresh-icon');
-            if (icon) icon.classList.add('fa-spin'); // Bắt đầu xoay icon khi load
+            if (icon) icon.classList.add('fa-spin');
 
             const listContainer = document.getElementById('admin-orders-list');
-            const token = localStorage.getItem('access_token') || localStorage.getItem('token');
 
             try {
                 const res = await fetch(`${API_BASE}/orders/admin/all`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
-                if (!res.ok) throw new Error("Phiên làm việc hết hạn");
+                if (!res.ok) throw new Error("Không thể tải danh sách đơn hàng");
 
                 const orders = await res.json();
-                allOrders = orders.sort((a, b) => {
-                    return new Date(b.created_at) - new Date(a.created_at);
-                });
+                allOrders = orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
+                // Cập nhật Badge trên Sidebar
                 const pendingCount = allOrders.filter(o => o.status === 'pending').length;
                 const badge = document.getElementById('order-badge');
                 if (badge) {
@@ -221,18 +303,19 @@
                 }
 
                 renderTable();
-                console.log("Dữ liệu đã được cập nhật lúc: " + new Date().toLocaleTimeString());
             } catch (err) {
-                listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-red-400 font-medium"><i class="fas fa-exclamation-circle mr-2"></i> ${err.message}</td></tr>`;
+                if (listContainer) {
+                    listContainer.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-red-400 font-medium"><i class="fas fa-exclamation-circle mr-2"></i> ${err.message}</td></tr>`;
+                }
             } finally {
-                // Tắt hiệu ứng xoay sau 800ms để người dùng kịp thấy
                 setTimeout(() => { if (icon) icon.classList.remove('fa-spin'); }, 800);
             }
         }
 
         function renderTable() {
             const listContainer = document.getElementById('admin-orders-list');
-            const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
+            const searchInput = document.getElementById('orderSearch');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
 
             const filteredOrders = allOrders.filter(o =>
                 o.id.toLowerCase().includes(searchTerm) ||
@@ -242,7 +325,8 @@
 
             if (filteredOrders.length === 0) {
                 listContainer.innerHTML = '<tr><td colspan="5" class="text-center py-24 text-slate-300 font-medium italic">Không tìm thấy đơn hàng nào...</td></tr>';
-                document.getElementById('pagination-controls').innerHTML = '';
+                const pagin = document.getElementById('pagination-controls');
+                if (pagin) pagin.innerHTML = '';
                 return;
             }
 
@@ -252,8 +336,7 @@
             listContainer.innerHTML = paginatedOrders.map(order => {
                 const isPending = order.status === 'pending';
                 const email = order.profiles?.email || 'Guest';
-
-                const isAdmin = email === 'ngocthiep213@gmail.com';
+                const isAdmin = email === 'ngocthiep213@gmail.com'; // Logic badge admin của bạn
                 const adminBadge = isAdmin ? '<span class="ml-1 text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-md font-black uppercase">Admin</span>' : '';
 
                 let catStyle = 'bg-slate-100 text-slate-600';
@@ -262,47 +345,45 @@
                 if (order.category === 'component') catStyle = 'bg-amber-50 text-amber-600';
 
                 return `
-                <tr class="hover:bg-slate-50 transition-colors">
-                    <td class="py-5 px-8">
-                        <div class="flex flex-col gap-1">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="font-bold text-slate-800 text-sm truncate max-w-[200px]" title="${email}">
-                                    ${email.split('@')[0]}
-                                </span>
-                                ${adminBadge}
-                            </div>
-                            <span class="text-[10px] font-black text-blue-500 tracking-tighter uppercase">
-                                ID: #${order.id.split('-')[0]}
+            <tr class="hover:bg-slate-50 transition-colors">
+                <td class="py-5 px-8">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="font-bold text-slate-800 text-sm truncate max-w-[150px]" title="${email}">
+                                ${email.split('@')[0]}
                             </span>
+                            ${adminBadge}
                         </div>
-                    </td>
-                    <td class="py-5 px-6">
-                        <div class="font-bold text-slate-700 text-xs mb-1 line-clamp-1">${order.product_name || 'Sản phẩm'}</div>
-                        <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase ${catStyle}">${order.category || 'General'}</span>
-                    </td>
-                    <td class="py-5 px-6">
-                        <div class="font-black text-slate-900 text-sm">${Number(order.total_price).toLocaleString()}đ</div>
-                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${order.payment_method || 'BANK'}</div>
-                    </td>
-                    <td class="py-5 px-6">
-                        <p class="text-[11px] text-slate-500 italic max-w-[140px] truncate" title="${order.note || ''}">${order.note || '---'}</p>
-                    </td>
-                    <td class="py-5 px-8 text-right">
-                        ${isPending ? `
-                            <button onclick="openApproveModal('${order.id}', '${order.category}')" 
-                                class="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition active:scale-95 shadow-lg shadow-blue-100">
-                                Duyệt đơn
-                            </button>
-                        ` : `
-                            <div class="flex flex-col items-end">
-                                <span class="px-3 py-1 rounded-lg text-[9px] font-black uppercase ${order.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
-                                    ${order.status === 'completed' ? 'Đã bàn giao' : 'Đã hủy'}
-                                </span>
-                                <span class="text-[9px] text-slate-400 font-bold mt-1 tracking-tighter">${new Date(order.created_at).toLocaleString('vi-VN')}</span>
-                            </div>
-                        `}
-                    </td>
-                </tr>`;
+                        <span class="text-[10px] font-black text-blue-500 tracking-tighter uppercase">ID: #${order.id.split('-')[0]}</span>
+                    </div>
+                </td>
+                <td class="py-5 px-6">
+                    <div class="font-bold text-slate-700 text-xs mb-1 line-clamp-1">${order.product_name || 'Sản phẩm'}</div>
+                    <span class="text-[9px] px-2 py-0.5 rounded-md font-black uppercase ${catStyle}">${order.category || 'General'}</span>
+                </td>
+                <td class="py-5 px-6">
+                    <div class="font-black text-slate-900 text-sm">${Number(order.total_price).toLocaleString()}đ</div>
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${order.payment_method || 'BANK'}</div>
+                </td>
+                <td class="py-5 px-6">
+                    <p class="text-[11px] text-slate-500 italic max-w-[140px] truncate" title="${order.note || ''}">${order.note || '---'}</p>
+                </td>
+                <td class="py-5 px-8 text-right">
+                    ${isPending ? `
+                        <button onclick="openApproveModal('${order.id}', '${order.category}')" 
+                            class="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition active:scale-95 shadow-lg shadow-blue-100">
+                            Duyệt đơn
+                        </button>
+                    ` : `
+                        <div class="flex flex-col items-end">
+                            <span class="px-3 py-1 rounded-lg text-[9px] font-black uppercase ${order.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+                                ${order.status === 'completed' ? 'Đã bàn giao' : 'Đã hủy'}
+                            </span>
+                            <span class="text-[9px] text-slate-400 font-bold mt-1 tracking-tighter">${new Date(order.created_at).toLocaleString('vi-VN')}</span>
+                        </div>
+                    `}
+                </td>
+            </tr>`;
             }).join('');
 
             renderPagination(filteredOrders.length);
@@ -311,15 +392,16 @@
         function renderPagination(totalItems) {
             const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
             const container = document.getElementById('pagination-controls');
+            if (!container) return;
             if (totalPages <= 1) { container.innerHTML = '<span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Hiển thị tất cả</span>'; return; }
 
             container.innerHTML = `
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Trang ${currentPage} / ${totalPages}</div>
-                <div class="flex gap-2">
-                    <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:border-blue-500 transition-all"><i class="fas fa-chevron-left text-xs"></i></button>
-                    <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:border-blue-500 transition-all"><i class="fas fa-chevron-right text-xs"></i></button>
-                </div>
-            `;
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Trang ${currentPage} / ${totalPages}</div>
+            <div class="flex gap-2">
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:border-blue-500 transition-all"><i class="fas fa-chevron-left text-xs"></i></button>
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''} class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-30 hover:border-blue-500 transition-all"><i class="fas fa-chevron-right text-xs"></i></button>
+            </div>
+        `;
         }
 
         function changePage(page) {
@@ -328,9 +410,7 @@
         }
 
         function openApproveModal(id, category) {
-            // Tạm dừng tự động load khi đang nhập liệu để không bị reset trang
             stopAutoRefresh();
-
             document.getElementById('modal-order-id').value = id;
             const desc = {
                 'account': 'Nhập Thông tin tài khoản hoặc Mã Key bản quyền.',
@@ -344,13 +424,12 @@
 
         function closeModal() {
             document.getElementById('approve-modal').classList.replace('flex', 'hidden');
-            startAutoRefresh(); // Chạy lại tự động load khi đóng modal
+            startAutoRefresh();
         }
 
         async function submitApproval() {
             const id = document.getElementById('modal-order-id').value;
             const data = document.getElementById('modal-delivery-data').value;
-            const token = localStorage.getItem('access_token') || localStorage.getItem('token');
             const btn = document.getElementById('btn-submit-approve');
 
             if (!data.trim()) return alert("Vui lòng nhập dữ liệu bàn giao!");
@@ -379,7 +458,6 @@
             }
         }
 
-        // --- HÀM XỬ LÝ TỰ ĐỘNG LOAD ---
         function startAutoRefresh() {
             if (refreshTimer) clearInterval(refreshTimer);
             refreshTimer = setInterval(() => {
@@ -391,11 +469,8 @@
             if (refreshTimer) clearInterval(refreshTimer);
         }
 
-        // Khởi chạy khi trang load xong
-        window.onload = () => {
-            loadAdminOrders();
-            startAutoRefresh();
-        };
+        // KHỞI CHẠY KIỂM TRA QUYỀN TRƯỚC
+        window.onload = checkAdminAccess;
     </script>
 </body>
 

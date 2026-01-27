@@ -28,38 +28,53 @@
 
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
 
-    <aside id="sidebar" class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
+    <aside id="sidebar"
+        class="w-64 bg-slate-900 text-slate-300 flex-col border-r border-slate-800 hidden md:flex min-h-screen sticky top-0">
         <div class="p-6 border-b border-slate-800/50 text-center md:text-left">
-            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span class="text-blue-500 text-xs font-normal">Admin</span></h1>
+            <h1 class="text-white text-xl font-bold tracking-tight">TechShop <span
+                    class="text-blue-500 text-xs font-normal">Admin</span></h1>
         </div>
         <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto no-scrollbar">
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Hệ thống</p>
-            <a href="admin.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Dashboard</span>
+            <a href="admin.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-chart-pie w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium">Dashboard</span>
             </a>
-            <a href="admin_orders.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-shopping-basket w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium">Quản lý đơn hàng</span>
-                <span id="order-badge" class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
+            <a href="admin_orders.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-shopping-basket w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium">Quản lý đơn hàng</span>
+                <span id="order-badge"
+                    class="ml-auto bg-white text-blue-600 text-[10px] px-2 py-0.5 rounded-full font-black hidden">0</span>
             </a>
             <div class="h-4"></div>
             <p class="text-[10px] font-bold text-slate-500 uppercase px-4 mb-3 tracking-[0.2em]">Sản phẩm</p>
-            <a href="accounts.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Account AI</span>
+            <a href="accounts.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-robot w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium text-sm">Account AI</span>
             </a>
-            <a href="phone_lock.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
-                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span class="font-medium text-sm">Điện thoại lock</span>
+            <a href="phone_lock.html"
+                class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all group">
+                <i class="fas fa-mobile-alt w-5 text-slate-500 group-hover:text-blue-400"></i><span
+                    class="font-medium text-sm">Điện thoại lock</span>
             </a>
-            <a href="components.html" class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40 group">
+            <a href="components.html"
+                class="flex items-center gap-3 bg-blue-600 text-white px-4 py-3 rounded-xl transition shadow-lg shadow-blue-900/40 group">
                 <i class="fas fa-microchip w-5"></i><span class="font-medium text-sm">Linh Kiện</span>
             </a>
             <div class="pt-10">
-                <a href="../index.html" class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
-                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang chủ</span>
+                <a href="../index.html"
+                    class="flex items-center gap-3 hover:bg-slate-800 hover:text-white px-4 py-3 rounded-xl transition-all">
+                    <i class="fas fa-arrow-left w-5 text-slate-500"></i><span class="font-medium text-sm">Về trang
+                        chủ</span>
                 </a>
             </div>
         </nav>
         <div class="p-4 border-t border-slate-800">
-            <button onclick="logout()" class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
+            <button onclick="logout()"
+                class="w-full flex items-center justify-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white p-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest">
                 <i class="fas fa-power-off"></i> Đăng xuất
             </button>
         </div>
@@ -120,7 +135,7 @@
                     </div>
 
                     <div class="lg:col-span-4 flex items-end gap-2">
-                        
+
                         <button onclick="saveComponent()" id="btnSave"
                             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all shadow-md active:scale-95 h-10">
                             <i class="fas fa-plus mr-2"></i>Thêm linh kiện
@@ -168,84 +183,167 @@
 
     <script src="js/auth.js"></script>
     <script>
-        const API_URL = 'http://localhost:4000/api/components';
-        const token = localStorage.getItem('access_token');
+        const API_BASE = 'http://localhost:4000/api';
+        const API_URL = `${API_BASE}/components`;
+        const token = localStorage.getItem('access_token') || localStorage.getItem('token');
 
         let allComponents = [];
         let currentPage = 1;
         const itemsPerPage = 5;
-        let editingId = null; // Biến quan trọng để theo dõi trạng thái Sửa
+        let editingId = null;
+        let countdownTimer = null;
 
+        // --- 1. BẢO MẬT & KIỂM TRA QUYỀN (ĐỒNG BỘ) ---
+        async function checkAdminAccess() {
+            if (!token) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            try {
+                const resMe = await fetch(`${API_BASE}/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!resMe.ok) throw new Error("Phiên làm việc hết hạn");
+
+                const userData = await resMe.json();
+
+                // Chặn nếu không phải admin/root
+                if (userData.role !== 'admin' && userData.role !== 'root') {
+                    renderAccessDenied(userData.email);
+                    startCountdown();
+                    return;
+                }
+
+                // Nếu hợp lệ -> Tải dữ liệu linh kiện
+                loadComponents();
+
+            } catch (error) {
+                console.error("Lỗi xác thực:", error);
+                localStorage.clear();
+                window.location.href = '../login.html';
+            }
+        }
+
+        function renderAccessDenied(email) {
+            document.body.className = "m-0 p-0 overflow-hidden";
+            document.body.innerHTML = `
+            <div class="fixed inset-0 min-h-screen w-full bg-slate-50 flex items-center justify-center p-6 z-[9999]">
+                <div class="max-w-md w-full bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 text-center font-['Inter']">
+                    <div class="w-20 h-20 bg-red-100 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6 relative">
+                        <i class="fas fa-user-shield text-3xl"></i>
+                        <span class="absolute -top-1 -right-1 flex h-5 w-5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
+                        </span>
+                    </div>
+                    <h1 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Truy cập bị chặn</h1>
+                    <p class="text-slate-500 text-sm mb-4">Tài khoản <span class="font-bold text-slate-800">${email}</span> không có quyền Admin.</p>
+                    <div class="bg-slate-50 rounded-2xl p-4 mb-8 border border-slate-100">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tự động quay lại sau</p>
+                        <div class="flex items-center justify-center gap-1">
+                            <span id="countdown-text" class="text-2xl font-black text-blue-600">5</span>
+                            <span class="text-sm font-bold text-slate-400">giây</span>
+                        </div>
+                    </div>
+                    <a href="../index.html" class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all w-full justify-center">
+                        <i class="fas fa-home"></i> Về trang chủ ngay
+                    </a>
+                </div>
+            </div>
+        `;
+        }
+
+        function startCountdown() {
+            let seconds = 5;
+            const textEl = document.getElementById('countdown-text');
+            countdownTimer = setInterval(() => {
+                seconds--;
+                if (textEl) textEl.innerText = seconds;
+                if (seconds <= 0) {
+                    clearInterval(countdownTimer);
+                    window.location.href = '../index.html';
+                }
+            }, 1000);
+        }
+
+        // --- 2. QUẢN LÝ LINH KIỆN ---
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+            const sb = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sb) sb.classList.toggle('-translate-x-full');
+            if (overlay) overlay.classList.toggle('hidden');
         }
 
         function showNotify(msg, isError = false) {
             const status = document.getElementById('status');
+            if (!status) return;
             status.textContent = msg;
             status.classList.remove('hidden');
-            status.className = `px-4 py-1.5 rounded-full text-xs font-bold ${isError ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`;
+            status.className = `px-4 py-1.5 rounded-full text-xs font-bold transition-all ${isError ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`;
             setTimeout(() => status.classList.add('hidden'), 3000);
         }
 
         async function loadComponents() {
             const loading = document.getElementById('loading');
-            loading.classList.remove('hidden');
+            if (loading) loading.classList.remove('hidden');
             try {
                 const res = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (!res.ok) throw new Error("Không thể tải dữ đảo");
                 allComponents = await res.json();
                 renderTable();
             } catch (err) {
-                showNotify("Không thể tải dữ liệu", true);
+                showNotify("Lỗi: " + err.message, true);
             } finally {
-                loading.classList.add('hidden');
+                if (loading) loading.classList.add('hidden');
             }
         }
 
         function renderTable() {
             const listBody = document.getElementById('component-list');
+            if (!listBody) return;
+
             const startIndex = (currentPage - 1) * itemsPerPage;
             const paginatedData = allComponents.slice(startIndex, startIndex + itemsPerPage);
 
             listBody.innerHTML = paginatedData.map(c => `
-                <tr class="hover:bg-slate-50/80 transition group">
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg border border-slate-100 overflow-hidden bg-slate-50 flex-shrink-0">
-                                <img src="${c.image_url || '../assets/noimage.png'}" class="w-full h-full object-cover">
-                            </div>
-                            <span class="font-bold text-slate-700 truncate max-w-[200px]">${c.name}</span>
+            <tr class="hover:bg-slate-50/80 transition group text-center">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3 justify-center text-left">
+                        <div class="w-10 h-10 rounded-lg border border-slate-100 overflow-hidden bg-slate-50 flex-shrink-0">
+                            <img src="${c.image_url || '../assets/noimage.png'}" class="w-full h-full object-cover">
                         </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="bg-purple-50 text-purple-600 px-2 py-1 rounded-md text-[10px] font-bold uppercase">${c.category}</span>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="font-medium text-slate-600">${c.stock} cái</div>
-                        <div class="text-[10px] font-bold text-blue-600">${Number(c.price).toLocaleString()}đ</div>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <span class="${c.stock > 0 ? 'text-green-500 bg-green-50' : 'text-red-500 bg-red-50'} font-bold text-[9px] px-2 py-1 rounded-lg uppercase">
-                            ${c.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end gap-2">
-                            <button onclick="prepareEdit('${c.id}')" class="text-slate-400 hover:text-blue-500 p-2 transition">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteComponent('${c.id}')" class="text-slate-300 hover:text-red-500 p-2 transition">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+                        <span class="font-bold text-slate-700 truncate max-w-[180px]">${c.name}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="bg-purple-50 text-purple-600 px-2 py-1 rounded-md text-[10px] font-bold uppercase">${c.category}</span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="font-medium text-slate-600">${c.stock} cái</div>
+                    <div class="text-[10px] font-bold text-blue-600">${Number(c.price).toLocaleString()}đ</div>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="${c.stock > 0 ? 'text-green-500 bg-green-50' : 'text-red-500 bg-red-50'} font-bold text-[9px] px-2 py-1 rounded-lg uppercase">
+                        ${c.stock > 0 ? 'Còn hàng' : 'Hết hàng'}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex justify-end gap-1">
+                        <button onclick="prepareEdit('${c.id}')" class="text-slate-400 hover:text-blue-500 p-2 transition">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteComponent('${c.id}')" class="text-slate-300 hover:text-red-500 p-2 transition">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
             renderPagination();
         }
 
-        // Chế độ Chỉnh sửa: Đổ dữ liệu lên form
         function prepareEdit(id) {
             const item = allComponents.find(c => c.id === id);
             if (!item) return;
@@ -257,8 +355,7 @@
             document.getElementById('compPrice').value = item.price;
             document.getElementById('compImage').value = item.image_url || '';
 
-            // Cập nhật UI Form
-            document.getElementById('formTitle').textContent = "Đang chỉnh sửa sản phẩm";
+            document.getElementById('formTitle').textContent = "Cập nhật linh kiện";
             document.getElementById('btnCancel').classList.remove('hidden');
             const btnSave = document.getElementById('btnSave');
             btnSave.innerHTML = '<i class="fas fa-save mr-2"></i>Cập nhật';
@@ -267,17 +364,24 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Hủy bỏ chế độ sửa
         function resetForm() {
             editingId = null;
-            document.getElementById('formTitle').textContent = "Thêm sản phẩm mới";
-            document.getElementById('btnCancel').classList.add('hidden');
+            const fTitle = document.getElementById('formTitle');
+            if (fTitle) fTitle.textContent = "Thêm sản phẩm mới";
+
+            const btnC = document.getElementById('btnCancel');
+            if (btnC) btnC.classList.add('hidden');
+
             const btnSave = document.getElementById('btnSave');
-            btnSave.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
-            btnSave.classList.replace('bg-amber-500', 'bg-blue-600');
+            if (btnSave) {
+                btnSave.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
+                btnSave.classList.remove('bg-amber-500');
+                btnSave.classList.add('bg-blue-600');
+            }
 
             document.querySelectorAll('input').forEach(i => i.value = '');
-            document.getElementById('compCategory').value = '';
+            const sel = document.getElementById('compCategory');
+            if (sel) sel.value = '';
         }
 
         async function saveComponent() {
@@ -291,9 +395,9 @@
             if (!name || !category || !stock || !price) return showNotify("Vui lòng nhập đủ thông tin", true);
 
             btn.disabled = true;
+            const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang lưu...';
 
-            // Quyết định dùng POST (thêm) hay PUT (sửa)
             const method = editingId ? 'PUT' : 'POST';
             const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
@@ -313,7 +417,7 @@
                     showNotify(errData.message || "Lỗi thao tác", true);
                 }
             } catch (err) {
-                showNotify("Lỗi hệ thống kết nối", true);
+                showNotify("Lỗi hệ thống", true);
             } finally {
                 btn.disabled = false;
                 if (!editingId) btn.innerHTML = '<i class="fas fa-plus mr-2"></i>Thêm';
@@ -327,14 +431,19 @@
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                if (res.ok) { showNotify("Đã xóa thành công"); loadComponents(); }
-            } catch (err) { showNotify("Lỗi khi xóa", true); }
+                if (res.ok) {
+                    showNotify("Đã xóa thành công");
+                    loadComponents();
+                }
+            } catch (err) {
+                showNotify("Lỗi khi xóa", true);
+            }
         }
 
-        // --- Phân trang ---
         function renderPagination() {
             const totalPages = Math.ceil(allComponents.length / itemsPerPage);
             const container = document.getElementById('pagination');
+            if (!container) return;
             if (totalPages <= 1) { container.innerHTML = ''; return; }
 
             let html = `<button onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''} class="px-3 py-1 rounded-lg border border-slate-200 text-xs font-bold hover:bg-slate-100 disabled:opacity-50"><i class="fas fa-chevron-left"></i></button>`;
@@ -345,9 +454,13 @@
             container.innerHTML = html;
         }
 
-        function goToPage(page) { currentPage = page; renderTable(); }
+        function goToPage(page) {
+            currentPage = page;
+            renderTable();
+        }
 
-        checkAdmin().then(() => loadComponents());
+        // KHỞI CHẠY KIỂM TRA QUYỀN TRƯỚC
+        window.onload = checkAdminAccess;
     </script>
 </body>
 
